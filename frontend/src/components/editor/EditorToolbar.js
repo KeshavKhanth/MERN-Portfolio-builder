@@ -16,7 +16,8 @@ import {
   FaEdit,
   FaLink,
   FaExternalLinkAlt,
-  FaCopy
+  FaCopy,
+  FaPalette
 } from 'react-icons/fa';
 import { BsGrid3X3Gap } from 'react-icons/bs';
 import { MdWidgets } from 'react-icons/md';
@@ -30,6 +31,7 @@ import {
 import { savePortfolioSections, togglePublish } from '../../store/slices/portfolioSlice';
 import toast from 'react-hot-toast';
 import { ClipLoader } from 'react-spinners';
+import ThemeCustomizer from './ThemeCustomizer';
 
 const EditorToolbar = ({ portfolioId, onTogglePalette, onToggleProperties }) => {
   const dispatch = useDispatch();
@@ -38,6 +40,7 @@ const EditorToolbar = ({ portfolioId, onTogglePalette, onToggleProperties }) => 
   const [isPublishing, setIsPublishing] = useState(false);
   const [devicePreview, setDevicePreview] = useState('desktop');
   const [showPublishModal, setShowPublishModal] = useState(false);
+  const [showThemeCustomizer, setShowThemeCustomizer] = useState(false);
   
   const {
     editMode,
@@ -188,6 +191,15 @@ const EditorToolbar = ({ portfolioId, onTogglePalette, onToggleProperties }) => 
             title="Toggle Component Palette"
           >
             <MdWidgets className="text-gray-600" />
+          </button>
+
+          {/* Theme Customizer Toggle */}
+          <button
+            onClick={() => setShowThemeCustomizer(true)}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            title="Theme Customizer"
+          >
+            <FaPalette className="text-gray-600" />
           </button>
 
           {/* Properties Toggle */}
@@ -437,6 +449,12 @@ const EditorToolbar = ({ portfolioId, onTogglePalette, onToggleProperties }) => 
           </div>
         </div>
       )}
+
+      {/* Theme Customizer Modal */}
+      <ThemeCustomizer
+        isOpen={showThemeCustomizer}
+        onClose={() => setShowThemeCustomizer(false)}
+      />
     </div>
   );
 };

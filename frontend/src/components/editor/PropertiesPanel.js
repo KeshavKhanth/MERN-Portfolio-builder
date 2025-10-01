@@ -10,15 +10,18 @@ import {
   FaTrash,
   FaCog,
   FaArrowUp,
-  FaArrowDown
+  FaArrowDown,
+  FaMagic
 } from 'react-icons/fa';
 import { MdAnimation } from 'react-icons/md';
+import AdvancedStylePanel from './AdvancedStylePanel';
 
 const PropertiesPanel = ({ section, component, onUpdate, onDelete, customizations }) => {
   const [activeTab, setActiveTab] = useState('general');
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [selectedColor, setSelectedColor] = useState('#000000');
   const [colorTarget, setColorTarget] = useState(null);
+  const [showAdvancedPanel, setShowAdvancedPanel] = useState(false);
 
   // Support both section and component props for backward compatibility
   const item = section || component;
@@ -271,16 +274,42 @@ const PropertiesPanel = ({ section, component, onUpdate, onDelete, customization
                 className="w-full px-3 py-1 text-sm border border-gray-300 rounded"
               >
                 <option value="default">Default</option>
-                <option value="Inter">Inter</option>
-                <option value="Roboto">Roboto</option>
-                <option value="Open Sans">Open Sans</option>
-                <option value="Poppins">Poppins</option>
-                <option value="Montserrat">Montserrat</option>
-                <option value="Playfair Display">Playfair Display</option>
-                <option value="Raleway">Raleway</option>
-                <option value="Lato">Lato</option>
-                <option value="Source Sans Pro">Source Sans Pro</option>
-                <option value="monospace">Monospace</option>
+                <optgroup label="Sans Serif">
+                  <option value="Inter">Inter</option>
+                  <option value="Roboto">Roboto</option>
+                  <option value="Open Sans">Open Sans</option>
+                  <option value="Poppins">Poppins</option>
+                  <option value="Montserrat">Montserrat</option>
+                  <option value="Raleway">Raleway</option>
+                  <option value="Lato">Lato</option>
+                  <option value="Source Sans Pro">Source Sans Pro</option>
+                  <option value="Nunito Sans">Nunito Sans</option>
+                  <option value="DM Sans">DM Sans</option>
+                  <option value="Space Grotesk">Space Grotesk</option>
+                  <option value="Work Sans">Work Sans</option>
+                </optgroup>
+                <optgroup label="Serif">
+                  <option value="Playfair Display">Playfair Display</option>
+                  <option value="Merriweather">Merriweather</option>
+                  <option value="Cormorant Garamond">Cormorant Garamond</option>
+                  <option value="Crimson Text">Crimson Text</option>
+                  <option value="Libre Baskerville">Libre Baskerville</option>
+                  <option value="PT Serif">PT Serif</option>
+                </optgroup>
+                <optgroup label="Display">
+                  <option value="Oswald">Oswald</option>
+                  <option value="Bebas Neue">Bebas Neue</option>
+                  <option value="Anton">Anton</option>
+                  <option value="Righteous">Righteous</option>
+                  <option value="Fredoka One">Fredoka One</option>
+                </optgroup>
+                <optgroup label="Monospace">
+                  <option value="JetBrains Mono">JetBrains Mono</option>
+                  <option value="Fira Code">Fira Code</option>
+                  <option value="Source Code Pro">Source Code Pro</option>
+                  <option value="Roboto Mono">Roboto Mono</option>
+                  <option value="IBM Plex Mono">IBM Plex Mono</option>
+                </optgroup>
               </select>
             </div>
 
@@ -376,6 +405,108 @@ const PropertiesPanel = ({ section, component, onUpdate, onDelete, customization
                 <option value="wide">Wide (0.025em)</option>
                 <option value="wider">Wider (0.05em)</option>
                 <option value="widest">Widest (0.1em)</option>
+              </select>
+            </div>
+
+            {/* Text Shadow */}
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Text Shadow
+              </label>
+              <select
+                value={item.props?.textShadow || 'none'}
+                onChange={(e) => onUpdate({
+                  props: { ...item.props, textShadow: e.target.value }
+                })}
+                className="w-full px-3 py-1 text-sm border border-gray-300 rounded"
+              >
+                <option value="none">None</option>
+                <option value="sm">Small (1px 1px 2px)</option>
+                <option value="md">Medium (2px 2px 4px)</option>
+                <option value="lg">Large (4px 4px 8px)</option>
+                <option value="colored">Colored Shadow</option>
+              </select>
+            </div>
+
+            {/* Text Gradient */}
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Text Gradient
+              </label>
+              <div className="space-y-2">
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={item.props?.textGradient?.enabled || false}
+                    onChange={(e) => onUpdate({
+                      props: { 
+                        ...item.props, 
+                        textGradient: {
+                          ...item.props?.textGradient,
+                          enabled: e.target.checked
+                        }
+                      }
+                    })}
+                    className="rounded"
+                  />
+                  <span className="text-xs">Enable Gradient</span>
+                </label>
+                {item.props?.textGradient?.enabled && (
+                  <select
+                    value={item.props?.textGradient?.type || 'linear'}
+                    onChange={(e) => onUpdate({
+                      props: { 
+                        ...item.props, 
+                        textGradient: {
+                          ...item.props?.textGradient,
+                          type: e.target.value
+                        }
+                      }
+                    })}
+                    className="w-full px-3 py-1 text-sm border border-gray-300 rounded"
+                  >
+                    <option value="linear">Linear</option>
+                    <option value="radial">Radial</option>
+                    <option value="conic">Conic</option>
+                  </select>
+                )}
+              </div>
+            </div>
+
+            {/* Writing Mode */}
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Writing Mode
+              </label>
+              <select
+                value={item.props?.writingMode || 'horizontal-tb'}
+                onChange={(e) => onUpdate({
+                  props: { ...item.props, writingMode: e.target.value }
+                })}
+                className="w-full px-3 py-1 text-sm border border-gray-300 rounded"
+              >
+                <option value="horizontal-tb">Horizontal</option>
+                <option value="vertical-rl">Vertical Right-to-Left</option>
+                <option value="vertical-lr">Vertical Left-to-Right</option>
+              </select>
+            </div>
+
+            {/* Word Spacing */}
+            <div>
+              <label className="block text-xs font-medium text-gray-700 mb-1">
+                Word Spacing
+              </label>
+              <select
+                value={item.props?.wordSpacing || 'normal'}
+                onChange={(e) => onUpdate({
+                  props: { ...item.props, wordSpacing: e.target.value }
+                })}
+                className="w-full px-3 py-1 text-sm border border-gray-300 rounded"
+              >
+                <option value="tight">Tight (-0.05em)</option>
+                <option value="normal">Normal</option>
+                <option value="wide">Wide (0.1em)</option>
+                <option value="wider">Wider (0.2em)</option>
               </select>
             </div>
           </>
@@ -475,7 +606,191 @@ const PropertiesPanel = ({ section, component, onUpdate, onDelete, customization
             <option value="md">Medium</option>
             <option value="lg">Large</option>
             <option value="xl">Extra Large</option>
+            <option value="2xl">2X Large</option>
+            <option value="inner">Inner</option>
+            <option value="colored">Colored</option>
           </select>
+        </div>
+
+        {/* Border */}
+        <div>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            Border
+          </label>
+          <div className="space-y-2">
+            <select
+              value={item.props?.borderWidth || 'none'}
+              onChange={(e) => onUpdate({
+                props: { ...item.props, borderWidth: e.target.value }
+              })}
+              className="w-full px-3 py-1 text-sm border border-gray-300 rounded"
+            >
+              <option value="none">None</option>
+              <option value="1">1px</option>
+              <option value="2">2px</option>
+              <option value="4">4px</option>
+              <option value="8">8px</option>
+            </select>
+            {item.props?.borderWidth !== 'none' && (
+              <>
+                <select
+                  value={item.props?.borderStyle || 'solid'}
+                  onChange={(e) => onUpdate({
+                    props: { ...item.props, borderStyle: e.target.value }
+                  })}
+                  className="w-full px-3 py-1 text-sm border border-gray-300 rounded"
+                >
+                  <option value="solid">Solid</option>
+                  <option value="dashed">Dashed</option>
+                  <option value="dotted">Dotted</option>
+                  <option value="double">Double</option>
+                  <option value="groove">Groove</option>
+                  <option value="ridge">Ridge</option>
+                </select>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-gray-600">Border Color</span>
+                  <button
+                    onClick={() => {
+                      setColorTarget('borderColor');
+                      setSelectedColor(item.props?.borderColor || '#e5e7eb');
+                      setShowColorPicker(!showColorPicker);
+                    }}
+                    className="w-8 h-8 rounded border-2 border-gray-300"
+                    style={{ backgroundColor: item.props?.borderColor || '#e5e7eb' }}
+                  />
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+
+        {/* Background Effects */}
+        <div>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            Background Effects
+          </label>
+          <div className="space-y-2">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={item.props?.backgroundGradient?.enabled || false}
+                onChange={(e) => onUpdate({
+                  props: { 
+                    ...item.props, 
+                    backgroundGradient: {
+                      ...item.props?.backgroundGradient,
+                      enabled: e.target.checked
+                    }
+                  }
+                })}
+                className="rounded"
+              />
+              <span className="text-xs">Background Gradient</span>
+            </label>
+            {item.props?.backgroundGradient?.enabled && (
+              <select
+                value={item.props?.backgroundGradient?.direction || 'to-r'}
+                onChange={(e) => onUpdate({
+                  props: { 
+                    ...item.props, 
+                    backgroundGradient: {
+                      ...item.props?.backgroundGradient,
+                      direction: e.target.value
+                    }
+                  }
+                })}
+                className="w-full px-3 py-1 text-sm border border-gray-300 rounded"
+              >
+                <option value="to-r">To Right</option>
+                <option value="to-l">To Left</option>
+                <option value="to-t">To Top</option>
+                <option value="to-b">To Bottom</option>
+                <option value="to-tr">To Top Right</option>
+                <option value="to-tl">To Top Left</option>
+                <option value="to-br">To Bottom Right</option>
+                <option value="to-bl">To Bottom Left</option>
+              </select>
+            )}
+          </div>
+        </div>
+
+        {/* Backdrop Filter */}
+        <div>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            Backdrop Filter
+          </label>
+          <select
+            value={item.props?.backdropFilter || 'none'}
+            onChange={(e) => onUpdate({
+              props: { ...item.props, backdropFilter: e.target.value }
+            })}
+            className="w-full px-3 py-1 text-sm border border-gray-300 rounded"
+          >
+            <option value="none">None</option>
+            <option value="blur-sm">Blur Small</option>
+            <option value="blur-md">Blur Medium</option>
+            <option value="blur-lg">Blur Large</option>
+            <option value="brightness-50">Darken</option>
+            <option value="brightness-150">Brighten</option>
+            <option value="contrast-150">High Contrast</option>
+            <option value="grayscale">Grayscale</option>
+            <option value="sepia">Sepia</option>
+          </select>
+        </div>
+
+        {/* Transform */}
+        <div>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            Transform
+          </label>
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="text-xs text-gray-500">Rotate (deg)</label>
+              <input
+                type="number"
+                min="-180"
+                max="180"
+                value={item.props?.rotate || 0}
+                onChange={(e) => onUpdate({
+                  props: { ...item.props, rotate: parseInt(e.target.value) }
+                })}
+                className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-gray-500">Scale (%)</label>
+              <input
+                type="number"
+                min="10"
+                max="200"
+                value={item.props?.scale || 100}
+                onChange={(e) => onUpdate({
+                  props: { ...item.props, scale: parseInt(e.target.value) }
+                })}
+                className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Opacity */}
+        <div>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            Opacity
+          </label>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={item.props?.opacity || 100}
+            onChange={(e) => onUpdate({
+              props: { ...item.props, opacity: parseInt(e.target.value) }
+            })}
+            className="w-full"
+          />
+          <div className="text-xs text-gray-500 text-center">
+            {item.props?.opacity || 100}%
+          </div>
         </div>
       </div>
     );
@@ -610,8 +925,14 @@ const PropertiesPanel = ({ section, component, onUpdate, onDelete, customization
         )}
       </AnimatePresence>
 
-      {/* Delete Button */}
-      <div className="p-4 border-t border-gray-200">
+      {/* Action Buttons */}
+      <div className="p-4 border-t border-gray-200 space-y-2">
+        <button
+          onClick={() => setShowAdvancedPanel(true)}
+          className="w-full px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center justify-center gap-2"
+        >
+          <FaMagic /> Advanced Styling
+        </button>
         <button
           onClick={onDelete}
           className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center gap-2"
@@ -619,6 +940,15 @@ const PropertiesPanel = ({ section, component, onUpdate, onDelete, customization
           <FaTrash /> Delete Section
         </button>
       </div>
+
+      {/* Advanced Style Panel */}
+      {showAdvancedPanel && (
+        <AdvancedStylePanel
+          item={item}
+          onUpdate={onUpdate}
+          onClose={() => setShowAdvancedPanel(false)}
+        />
+      )}
     </div>
   );
 };

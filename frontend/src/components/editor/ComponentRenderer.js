@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 import { useDrag } from 'react-dnd';
 import { motion } from 'framer-motion';
 import { Rnd } from 'react-rnd';
+import { generateComponentStyles } from '../../utils/styleUtils';
 import {
   FaTrash,
   FaCopy,
@@ -154,6 +155,9 @@ const ComponentRenderer = ({
   };
 
   const renderComponent = () => {
+    // Generate advanced styles using the utility
+    const { styles: generatedStyles, classes } = generateComponentStyles(component.props, customizations);
+    
     // Sanitize style prop if it exists in component.props
     const sanitizedProps = { ...component.props };
     if (sanitizedProps.style && typeof sanitizedProps.style === 'object') {
@@ -165,7 +169,14 @@ const ComponentRenderer = ({
           cleanStyle[key] = value;
         }
       }
-      sanitizedProps.style = cleanStyle;
+      sanitizedProps.style = { ...cleanStyle, ...generatedStyles };
+    } else {
+      sanitizedProps.style = generatedStyles;
+    }
+    
+    // Add generated CSS classes
+    if (classes.length > 0) {
+      sanitizedProps.className = `${sanitizedProps.className || ''} ${classes.join(' ')}`.trim();
     }
     
     // Ensure content is properly passed based on component type

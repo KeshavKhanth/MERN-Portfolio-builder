@@ -7,7 +7,7 @@ const getBaseURL = () => {
     return window.location.origin;
   }
   // In development, use the environment variable or localhost
-  return process.env.REACT_APP_API_URL || 'http://localhost:5000';
+  return process.env.REACT_APP_API_URL || 'http://0.0.0.0:5000';
 };
 
 const axiosInstance = axios.create({

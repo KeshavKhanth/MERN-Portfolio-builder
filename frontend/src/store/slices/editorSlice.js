@@ -22,12 +22,29 @@ const initialState = {
       secondary: '#6b7280',
       accent: '#10b981',
       background: '#ffffff',
+      surface: '#f9fafb',
       text: '#111827',
-      muted: '#9ca3af'
+      textSecondary: '#6b7280',
+      border: '#e5e7eb',
+      success: '#10b981',
+      warning: '#f59e0b',
+      error: '#ef4444'
     },
     fonts: {
       heading: 'Inter',
-      body: 'Open Sans'
+      body: 'Inter',
+      display: 'Inter',
+      mono: 'JetBrains Mono'
+    },
+    typography: {
+      scale: 'medium',
+      baseSize: '16px',
+      scaleRatio: 1.25
+    },
+    spacing: {
+      containerWidth: '100%',
+      sectionSpacing: '2rem',
+      componentSpacing: '1rem'
     },
     layout: {
       containerWidth: '100%',
@@ -35,7 +52,14 @@ const initialState = {
     },
     animations: {
       enabled: true,
-      type: 'fade'
+      type: 'fade',
+      duration: 'normal',
+      easing: 'ease-in-out'
+    },
+    effects: {
+      shadows: true,
+      gradients: false,
+      blur: false
     }
   },
   history: [],
@@ -227,6 +251,30 @@ const editorSlice = createSlice({
       };
     },
 
+    // Update typography
+    updateTypography: (state, action) => {
+      state.customizations.typography = {
+        ...state.customizations.typography,
+        ...action.payload
+      };
+    },
+
+    // Update spacing
+    updateSpacing: (state, action) => {
+      state.customizations.spacing = {
+        ...state.customizations.spacing,
+        ...action.payload
+      };
+    },
+
+    // Update effects
+    updateEffects: (state, action) => {
+      state.customizations.effects = {
+        ...state.customizations.effects,
+        ...action.payload
+      };
+    },
+
     // Load portfolio
     loadPortfolio: (state, action) => {
       const { sections, content, customizations } = action.payload;
@@ -327,6 +375,9 @@ export const {
   updateCustomizations,
   updateColors,
   updateFonts,
+  updateTypography,
+  updateSpacing,
+  updateEffects,
   loadPortfolio,
   undo,
   redo,
