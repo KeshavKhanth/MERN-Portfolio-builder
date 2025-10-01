@@ -10,6 +10,18 @@ const path = require('path');
 // Load env vars
 dotenv.config();
 
+// Validate required environment variables
+const requiredEnvVars = ['MONGODB_URI', 'JWT_SECRET', 'JWT_REFRESH_SECRET'];
+const missingEnvVars = requiredEnvVars.filter(envVar => !process.env[envVar]);
+
+if (missingEnvVars.length > 0) {
+  console.error('Missing required environment variables:', missingEnvVars.join(', '));
+  if (process.env.NODE_ENV === 'production') {
+    console.error('Application cannot start without these variables in production');
+    process.exit(1);
+  }
+}
+
 // Import DB connection
 const connectDB = require('./config/db');
 
@@ -95,10 +107,19 @@ app.get('/health', (req, res) => {
   });
 });
 
+// 404 handler for API routes only (before serving static files)
+app.use('/api/*', (req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'API route not found'
+  });
+});
+
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../frontend/build')));
   
+  // Handle React routing, return all requests to React app
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/build', 'index.html'));
   });
@@ -113,14 +134,6 @@ app.use((err, req, res, next) => {
   };
   
   res.status(err.statusCode || 500).json(error);
-});
-
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'Route not found'
-  });
 });
 
 // Start server
