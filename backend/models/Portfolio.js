@@ -102,26 +102,38 @@ const portfolioSchema = new mongoose.Schema({
 
 // Generate unique slug before saving
 portfolioSchema.pre('save', async function(next) {
-  if (this.isNew || this.isModified('title')) {
-    let baseSlug = this.title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)+/g, '');
-    
-    let slug = baseSlug;
-    let counter = 1;
-    
-    while (await mongoose.model('Portfolio').findOne({ slug, _id: { $ne: this._id } })) {
-      slug = `${baseSlug}-${counter}`;
-      counter++;
+  try {
+    if (this.isNew || this.isModified('title')) {
+      let baseSlug = this.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, '');
+      
+      // Ensure baseSlug is not empty
+      if (!baseSlug) {
+        baseSlug = 'portfolio';
+      }
+      
+      let slug = baseSlug;
+      let counter = 1;
+      
+      // Add userId to make slug more unique and avoid conflicts
+      const userId = this.userId.toString().slice(-6);
+      
+      while (await mongoose.model('Portfolio').findOne({ slug, _id: { $ne: this._id } })) {
+        slug = `${baseSlug}-${userId}-${counter}`;
+        counter++;
+      }
+      
+      this.slug = slug;
     }
     
-    this.slug = slug;
+    this.updatedAt = Date.now();
+    this.lastEditedAt = Date.now();
+    next();
+  } catch (error) {
+    next(error);
   }
-  
-  this.updatedAt = Date.now();
-  this.lastEditedAt = Date.now();
-  next();
 });
 
 // Save to history before updating

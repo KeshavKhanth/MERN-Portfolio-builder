@@ -7,8 +7,12 @@ const { validationResult } = require('express-validator');
 // @access  Private
 const createPortfolio = async (req, res) => {
   try {
+    console.log('Creating portfolio for user:', req.user?.id);
+    console.log('Request body:', JSON.stringify(req.body, null, 2));
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('Validation errors:', errors.array());
       return res.status(400).json({
         success: false,
         errors: errors.array()
@@ -53,18 +57,41 @@ const createPortfolio = async (req, res) => {
       }
     }
 
+    console.log('Portfolio data to create:', JSON.stringify(portfolioData, null, 2));
+    
     const portfolio = await Portfolio.create(portfolioData);
+    
+    console.log('Portfolio created successfully:', portfolio._id);
 
     res.status(201).json({
       success: true,
       data: portfolio
     });
   } catch (error) {
-    console.error(error);
+    console.error('Portfolio creation error:', error);
+    
+    // Handle specific MongoDB errors
+    if (error.code === 11000) {
+      return res.status(400).json({
+        success: false,
+        message: 'Portfolio with this title already exists. Please choose a different title.',
+        error: 'DUPLICATE_TITLE'
+      });
+    }
+    
+    if (error.name === 'ValidationError') {
+      const validationErrors = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({
+        success: false,
+        message: 'Validation error',
+        errors: validationErrors
+      });
+    }
+    
     res.status(500).json({
       success: false,
       message: 'Server error creating portfolio',
-      error: error.message
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error'
     });
   }
 };
