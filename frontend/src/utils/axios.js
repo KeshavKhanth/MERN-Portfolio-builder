@@ -1,8 +1,17 @@
 import axios from 'axios';
 
 // Create axios instance
+const getBaseURL = () => {
+  // In production, API calls should go to the same domain
+  if (process.env.NODE_ENV === 'production') {
+    return window.location.origin;
+  }
+  // In development, use the environment variable or localhost
+  return process.env.REACT_APP_API_URL || 'http://localhost:5000';
+};
+
 const axiosInstance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || 'http://localhost:5000',
+  baseURL: getBaseURL(),
   headers: {
     'Content-Type': 'application/json',
   },
