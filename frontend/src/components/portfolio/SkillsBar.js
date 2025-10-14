@@ -110,16 +110,15 @@ const SkillsBar = ({
 
       <div className="max-w-4xl mx-auto">
         {/* Responsive grid: 1 col sm, 2 col md, 3 col lg, 4 col xl */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
           {skills.map((skill, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.04 }}
-              className="flex items-start gap-3 bg-white p-4 rounded-lg shadow-sm"
+              className="group relative bg-gradient-to-br from-gray-50 to-white p-4 rounded-xl border border-gray-300 hover:border-blue-500 hover:shadow-md transition-all duration-300"
             >
-              <span className="mt-1 text-green-500 font-bold">✓</span>
               <div className="flex-1">
                 <div className="flex justify-between items-center">
                   {isEditing ? (
@@ -139,7 +138,7 @@ const SkillsBar = ({
                     </div>
                   ) : (
                     <>
-                      <span className="font-medium">{skill.name}</span>
+                      <span className="font-semibold text-gray-800 text-center w-full group-hover:text-blue-600 transition-colors">{skill.name}</span>
                     </>
                   )}
                 </div>

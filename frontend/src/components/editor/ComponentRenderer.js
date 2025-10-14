@@ -28,6 +28,7 @@ import ProcessSection from '../portfolio/ProcessSection';
 import FooterSection from '../portfolio/FooterSection';
 import ServicesSection from '../portfolio/ServicesSection';
 import TestimonialsSection from '../portfolio/TestimonialsSection';
+import ColumnsLayout from '../portfolio/ColumnsLayout';
 
 const componentMap = {
   text: (props) => {
@@ -57,6 +58,7 @@ const componentMap = {
   process: ProcessSection,
   cta: CTASection,
   footer: FooterSection,
+  columns: ColumnsLayout, // Two-column layout
   custom: null, // Custom sections
   empty: null, // Empty sections
   // Add more component mappings as needed

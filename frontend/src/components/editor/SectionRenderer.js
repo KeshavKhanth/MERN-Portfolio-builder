@@ -11,6 +11,7 @@ import TextComponent from '../portfolio/TextComponent';
 import HeadingComponent from '../portfolio/HeadingComponent';
 import ImageComponent from '../portfolio/ImageComponent';
 import ButtonComponent from '../portfolio/ButtonComponent';
+import ColumnsLayout from '../portfolio/ColumnsLayout';
 
 const SectionRenderer = ({ section, isSelected, isEditable, onUpdate, customizations }) => {
   const { type, props = {}, content = {} } = section;
@@ -31,6 +32,7 @@ const SectionRenderer = ({ section, isSelected, isEditable, onUpdate, customizat
     heading: HeadingComponent,
     image: ImageComponent,
     button: ButtonComponent,
+    columns: ColumnsLayout, // Two-column layout
     custom: null, // Will be handled as empty section with customizations
     empty: null // Explicitly empty section
   };
