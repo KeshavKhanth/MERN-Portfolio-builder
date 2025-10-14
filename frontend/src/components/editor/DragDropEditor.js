@@ -204,24 +204,7 @@ const DragDropEditor = ({ portfolioId }) => {
         </div>
       </div>
 
-      {/* Properties Panel */}
-      <AnimatePresence>
-        {showProperties && selectedComponent && (
-          <motion.div
-            initial={{ x: 300 }}
-            animate={{ x: 0 }}
-            exit={{ x: 300 }}
-            className="w-80 bg-white shadow-xl z-20 overflow-y-auto"
-          >
-            <PropertiesPanel
-              component={components.find(c => c.id === selectedComponent)}
-              onUpdate={(updates) => handleComponentUpdate(selectedComponent, updates)}
-              onDelete={() => dispatch(deleteComponent(selectedComponent))}
-              customizations={customizations}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Properties Panel removed — canvas reclaims full width */}
 
       <style jsx>{`
         .canvas-grid {

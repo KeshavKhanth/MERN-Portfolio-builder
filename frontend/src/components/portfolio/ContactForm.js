@@ -7,6 +7,7 @@ const ContactForm = ({
   formStyle = 'modern',  // Changed from 'style' to 'formStyle'
   style,  // Keep style for CSS styling if passed
   showLabels = true,
+  recipientEmail = '',
   isEditing,
   onPropsChange,
   customizations 
@@ -95,6 +96,24 @@ const ContactForm = ({
         >
           Get In Touch
         </h2>
+
+        {isEditing && (
+          <div className="mb-6 p-4 bg-green-50 rounded-lg border border-green-200">
+            <label className="block text-sm font-medium mb-2 text-gray-700">
+              Recipient Email Address <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="email"
+              value={recipientEmail}
+              onChange={(e) => onPropsChange && onPropsChange({ recipientEmail: e.target.value })}
+              placeholder="your-email@example.com"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all"
+            />
+            <p className="text-xs text-gray-600 mt-1">
+              Contact form submissions will be sent to this email address
+            </p>
+          </div>
+        )}
 
         {isEditing && (
           <div className="mb-6 p-4 bg-blue-50 rounded-lg">

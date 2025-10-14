@@ -3,9 +3,7 @@ import { creativeDarkTemplate } from './creativeDark';
 import { professionalCorporateTemplate } from './professionalCorporate';
 import { developerFocusedTemplate } from './developerFocused';
 import { modernCreativeTemplate } from './modernCreative';
-import tattooArtist from './tattooArtist';
 import photographerMinimal from './photographerMinimal';
-import designerBio from './designerBio';
 
 export const templates = {
   'modern-minimalist': modernMinimalistTemplate,
@@ -13,9 +11,7 @@ export const templates = {
   // 'professional-corporate': professionalCorporateTemplate,
   'developer-focused': developerFocusedTemplate,
   // 'modern-creative': modernCreativeTemplate,
-  // 'tattoo-artist': tattooArtist,
-  // 'photographer-minimal': photographerMinimal,
-  'designer-bio': designerBio
+  // 'photographer-minimal': photographerMinimal
 };
 
 export const getTemplate = (templateId) => {
@@ -28,9 +24,7 @@ const templateRatings = {
   'creative-dark': 4.9,
   'professional-corporate': 4.7,
   'modern-creative': 5.0,
-  'tattoo-artist': 4.8,
   'photographer-minimal': 4.9,
-  'designer-bio': 5.0,
   'developer-focused': 4.6,
   'default': 4.5
 };
@@ -39,8 +33,7 @@ const templateRatings = {
 const templateOrder = [
   'modern-minimalist',
   'creative-dark', 
-  'developer-focused',
-  'designer-bio'
+  'developer-focused'
 ];
 
 export const getAllTemplates = () => {

@@ -27,6 +27,7 @@ import CTASection from '../portfolio/CTASection';
 import ProcessSection from '../portfolio/ProcessSection';
 import FooterSection from '../portfolio/FooterSection';
 import ServicesSection from '../portfolio/ServicesSection';
+import TestimonialsSection from '../portfolio/TestimonialsSection';
 
 const componentMap = {
   text: (props) => {
@@ -45,12 +46,13 @@ const componentMap = {
   skills: SkillsBar,
   portfolio: PortfolioGrid,
   'portfolio-grid': PortfolioGrid,
+  projects: PortfolioGrid,
   contact: ContactForm,
   'contact-form': ContactForm,
   contactForm: ContactForm,
   socialLinks: SocialLinks,
   'social-links': SocialLinks,
-  testimonials: null, // Will be rendered through sections
+  testimonials: TestimonialsSection,
   services: ServicesSection,
   process: ProcessSection,
   cta: CTASection,

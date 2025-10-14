@@ -376,12 +376,9 @@ export const developerFocusedTemplate = {
         size: 'large',
         color: 'gradient',
         content: [
-          { platform: 'github', url: 'https://github.com' },
-          { platform: 'linkedin', url: 'https://linkedin.com' },
-          { platform: 'twitter', url: 'https://twitter.com' },
-          { platform: 'stackoverflow', url: 'https://stackoverflow.com' },
-          { platform: 'codepen', url: 'https://codepen.io' },
-          { platform: 'medium', url: 'https://medium.com' }
+          { platform: 'github', url: '' },
+          { platform: 'linkedin', url: '' },
+          { platform: 'email', url: '' }
         ]
       }
     }

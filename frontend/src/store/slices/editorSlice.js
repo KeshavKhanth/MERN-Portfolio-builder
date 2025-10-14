@@ -72,26 +72,39 @@ const editorSlice = createSlice({
   reducers: {
     // Add section
     addSection: (state, action) => {
+      const generatedId = `section-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+      // Default order is append to end
+      let order = state.sections.length + 1;
+
+      // If caller provided an order, insert at that order and shift others
+      if (action.payload?.order && action.payload.order <= state.sections.length) {
+        state.sections.forEach(section => {
+          if (section.order >= action.payload.order) section.order += 1;
+        });
+        order = action.payload.order;
+      } else if (!action.payload?.order && state.selectedSection) {
+        // If no explicit order provided but a section is selected, insert after it
+        const selected = state.sections.find(s => s.id === state.selectedSection);
+        if (selected) {
+          order = selected.order + 1;
+          // shift sections after selected
+          state.sections.forEach(section => {
+            if (section.order >= order) section.order += 1;
+          });
+        }
+      }
+
       const newSection = {
-        id: `section-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        order: state.sections.length + 1,
+        id: action.payload?.id || generatedId,
+        order,
         type: 'empty',
         name: 'New Section',
         props: {},
         content: {},
         ...action.payload
       };
-      
-      // Adjust order if inserting between sections
-      if (action.payload.order && action.payload.order <= state.sections.length) {
-        state.sections.forEach(section => {
-          if (section.order >= action.payload.order) {
-            section.order += 1;
-          }
-        });
-        newSection.order = action.payload.order;
-      }
-      
+
       state.sections.push(newSection);
       state.selectedSection = newSection.id;
       addToHistory(state);

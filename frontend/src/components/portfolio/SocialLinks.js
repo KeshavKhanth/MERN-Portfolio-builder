@@ -19,7 +19,8 @@ import {
   FaTiktok,
   FaPinterest,
   FaReddit,
-  FaTwitch
+  FaTwitch,
+  FaEnvelope
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
@@ -43,7 +44,8 @@ const socialIcons = {
   tiktok: FaTiktok,
   pinterest: FaPinterest,
   reddit: FaReddit,
-  twitch: FaTwitch
+  twitch: FaTwitch,
+  email: FaEnvelope
 };
 
 const socialColors = {
@@ -66,7 +68,8 @@ const socialColors = {
   tiktok: '#000',
   pinterest: '#bd081c',
   reddit: '#ff4500',
-  twitch: '#9146ff'
+  twitch: '#9146ff',
+  email: '#ea4335'
 };
 
 const SocialLinks = ({ 
@@ -75,15 +78,19 @@ const SocialLinks = ({
   style,  // Keep style for CSS styling if passed
   size = 'medium',
   color = 'default',
+  title = 'Connect With Me',
+  showTitle = true,
   isEditing,
   onContentChange,
   customizations 
 }) => {
+  // Default to professional platforms only
+  const professionalPlatforms = ['email','github','linkedin','twitter','dribbble','gitlab','youtube','instagram'];
   const [links, setLinks] = useState(
     content.length > 0 ? content : [
-      { platform: 'github', url: 'https://github.com' },
-      { platform: 'linkedin', url: 'https://linkedin.com' },
-      { platform: 'twitter', url: 'https://twitter.com' }
+      { platform: 'linkedin', url: '' },
+      { platform: 'github', url: '' },
+      { platform: 'email', url: '' }
     ]
   );
 
@@ -94,8 +101,9 @@ const SocialLinks = ({
   }, [content]);
 
   const handleLinkChange = (index, field, value) => {
-    const updatedLinks = [...links];
-    updatedLinks[index][field] = value;
+    const updatedLinks = links.map((link, i) => 
+      i === index ? { ...link, [field]: value } : { ...link }
+    );
     setLinks(updatedLinks);
     if (onContentChange) {
       onContentChange(updatedLinks);
@@ -103,7 +111,7 @@ const SocialLinks = ({
   };
 
   const addLink = () => {
-    const updated = [...links, { platform: 'github', url: '' }];
+    const updated = [...links.map(link => ({ ...link })), { platform: '', url: '' }];
     setLinks(updated);
     if (onContentChange) {
       onContentChange(updated);
@@ -111,7 +119,7 @@ const SocialLinks = ({
   };
 
   const removeLink = (index) => {
-    const updated = links.filter((_, i) => i !== index);
+    const updated = links.filter((_, i) => i !== index).map(link => ({ ...link }));
     setLinks(updated);
     if (onContentChange) {
       onContentChange(updated);
@@ -122,6 +130,17 @@ const SocialLinks = ({
     if (displayStyle === 'icons') {
       return (
         <div className="py-8">
+          {showTitle && !isEditing && (
+            <h2 
+              className="text-3xl font-bold text-center mb-8"
+              style={{ 
+                color: customizations?.colors?.text,
+                fontFamily: customizations?.fonts?.heading 
+              }}
+            >
+              {title}
+            </h2>
+          )}
           <div className="flex justify-center items-center gap-6">
             {links.map((link, index) => {
               const Icon = socialIcons[link.platform] || FaGithub;
@@ -130,17 +149,22 @@ const SocialLinks = ({
                 return (
                   <div key={index} className="flex flex-col items-center gap-1">
                     <div className="p-2 border-2 border-dashed border-gray-300 rounded">
-                      <Icon 
-                        className={sizeClasses[size]} 
-                        style={{ color: getIconColor(link.platform) }}
-                      />
+                      {link.platform ? (
+                        <Icon 
+                          className={sizeClasses[size]} 
+                          style={{ color: getIconColor(link.platform) }}
+                        />
+                      ) : (
+                        <div className={`${sizeClasses[size]} flex items-center justify-center text-gray-400`}>?</div>
+                      )}
                     </div>
                     <select
                       value={link.platform}
                       onChange={(e) => handleLinkChange(index, 'platform', e.target.value)}
                       className="text-xs border border-gray-300 rounded px-1 py-0.5"
                     >
-                      {Object.keys(socialIcons).map(platform => (
+                      <option value="">Select platform</option>
+                      {professionalPlatforms.map(platform => (
                         <option key={platform} value={platform}>{platform}</option>
                       ))}
                     </select>
@@ -161,12 +185,18 @@ const SocialLinks = ({
                 );
               }
 
+              // Skip rendering empty platforms or empty URLs in display mode
+              if (!link.platform || !link.url) return null;
+
+              const formattedUrl = formatUrl(link.url, link.platform);
+              const isEmail = link.platform === 'email';
+
               return (
                 <motion.a
                   key={index}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={formattedUrl}
+                  target={isEmail ? undefined : "_blank"}
+                  rel={isEmail ? undefined : "noopener noreferrer"}
                   whileHover={{ scale: 1.2, rotate: 5 }}
                   whileTap={{ scale: 0.9 }}
                   className="transition-all duration-200 hover:opacity-80"
@@ -193,6 +223,17 @@ const SocialLinks = ({
     if (displayStyle === 'buttons') {
       return (
         <div className="py-8">
+          {showTitle && !isEditing && (
+            <h2 
+              className="text-3xl font-bold text-center mb-8"
+              style={{ 
+                color: customizations?.colors?.text,
+                fontFamily: customizations?.fonts?.heading 
+              }}
+            >
+              {title}
+            </h2>
+          )}
           <div className="flex justify-center items-center gap-4 flex-wrap">
             {links.map((link, index) => {
               const Icon = socialIcons[link.platform] || FaGithub;
@@ -205,7 +246,8 @@ const SocialLinks = ({
                       onChange={(e) => handleLinkChange(index, 'platform', e.target.value)}
                       className="text-sm border border-gray-300 rounded px-2 py-1"
                     >
-                      {Object.keys(socialIcons).map(platform => (
+                      <option value="">Select platform</option>
+                      {professionalPlatforms.map(platform => (
                         <option key={platform} value={platform}>{platform}</option>
                       ))}
                     </select>
@@ -226,12 +268,18 @@ const SocialLinks = ({
                 );
               }
 
+              // Skip rendering empty platforms or empty URLs in display mode
+              if (!link.platform || !link.url) return null;
+
+              const formattedUrl = formatUrl(link.url, link.platform);
+              const isEmail = link.platform === 'email';
+
               return (
                 <motion.a
                   key={index}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={formattedUrl}
+                  target={isEmail ? undefined : "_blank"}
+                  rel={isEmail ? undefined : "noopener noreferrer"}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className="px-6 py-3 bg-white shadow-md rounded-lg flex items-center gap-2 hover:shadow-lg transition-shadow"
@@ -258,6 +306,17 @@ const SocialLinks = ({
     // Default style or list style
     return (
       <div className="py-8">
+        {showTitle && !isEditing && (
+          <h2 
+            className="text-3xl font-bold text-center mb-8"
+            style={{ 
+              color: customizations?.colors?.text,
+              fontFamily: customizations?.fonts?.heading 
+            }}
+          >
+            {title}
+          </h2>
+        )}
         <div className="flex justify-center items-center gap-6">
           {links.map((link, index) => {
             const Icon = socialIcons[link.platform] || FaGithub;
@@ -268,12 +327,18 @@ const SocialLinks = ({
                 </div>
               );
             }
+            // Skip rendering empty platforms or empty URLs in display mode
+            if (!link.platform || !link.url) return null;
+
+            const formattedUrl = formatUrl(link.url, link.platform);
+            const isEmail = link.platform === 'email';
+            
             return (
               <motion.a
                 key={index}
-                href={link.url}
-                target="_blank"
-                rel="noopener noreferrer"
+                href={formattedUrl}
+                target={isEmail ? undefined : "_blank"}
+                rel={isEmail ? undefined : "noopener noreferrer"}
                 whileHover={{ scale: 1.2 }}
                 className="transition-all duration-200"
                 style={{ color: getIconColor(link.platform) }}
@@ -303,6 +368,16 @@ const SocialLinks = ({
       return customizations.colors.primary;
     }
     return color || '#333';
+  };
+
+  const formatUrl = (url, platform) => {
+    if (platform === 'email') {
+      // If it's an email and doesn't start with mailto:, add it
+      if (url && !url.startsWith('mailto:')) {
+        return `mailto:${url}`;
+      }
+    }
+    return url;
   };
 
   return renderLinks();

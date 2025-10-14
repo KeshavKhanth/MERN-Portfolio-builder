@@ -350,9 +350,9 @@ export const professionalCorporateTemplate = {
         size: 'medium',
         color: 'professional',
         content: [
-          { platform: 'linkedin', url: 'https://linkedin.com' },
-          { platform: 'twitter', url: 'https://twitter.com' },
-          { platform: 'medium', url: 'https://medium.com' }
+          { platform: 'linkedin', url: '' },
+          { platform: 'email', url: '' },
+          { platform: 'github', url: '' }
         ]
       }
     }

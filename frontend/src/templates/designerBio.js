@@ -360,10 +360,9 @@ const designerBioTemplate = {
         }
       },
       content: [
-        { platform: 'Dribbble', url: 'https://dribbble.com' },
-        { platform: 'Behance', url: 'https://behance.net' },
-        { platform: 'Instagram', url: 'https://instagram.com' },
-        { platform: 'LinkedIn', url: 'https://linkedin.com' }
+        { platform: 'dribbble', url: '' },
+        { platform: 'linkedin', url: '' },
+        { platform: 'email', url: '' }
       ]
     }
   ]

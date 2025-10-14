@@ -27,40 +27,25 @@ import { motion } from 'framer-motion';
 const DraggableComponent = ({ component }) => {
   const [{ isDragging }, drag] = useDrag({
     type: 'component',
-    item: {
-      ...component,
-      isNew: true
-    },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging()
-    })
-  });
+    item: { ...component, isNew: true },
+    collect: (monitor) => ({ isDragging: monitor.isDragging() })
+  })
 
   return (
     <motion.div
       ref={drag}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      className={`
-        p-4 bg-white border-2 border-gray-200 rounded-lg cursor-move
-        hover:border-blue-400 hover:shadow-md transition-all duration-200
-        ${isDragging ? 'opacity-50' : 'opacity-100'}
-      `}
-      style={{
-        cursor: isDragging ? 'grabbing' : 'grab'
-      }}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      className={`p-3 rounded-lg border bg-white hover:border-blue-400 hover:shadow-md transition-all duration-200 ${isDragging ? 'opacity-50' : 'opacity-100'}`}
+      style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
     >
       <div className="flex flex-col items-center text-center">
-        <div className="text-3xl text-blue-600 mb-2">
-          {component.icon}
-        </div>
-        <span className="text-sm font-medium text-gray-700">
-          {component.name}
-        </span>
+        <div className="text-3xl text-blue-600 mb-2">{component.icon}</div>
+        <span className="text-sm font-medium text-gray-700">{component.name}</span>
       </div>
     </motion.div>
-  );
-};
+  )
+}
 
 const ComponentPalette = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -127,8 +112,8 @@ const ComponentPalette = () => {
         ]
       },
       {
-        type: 'portfolio',
-        name: 'Portfolio Grid',
+        type: 'projects',
+        name: 'Projects',
         icon: <FaTh />,
         category: 'sections',
         defaultProps: {
@@ -222,17 +207,7 @@ const ComponentPalette = () => {
         },
         defaultContent: 'Add your text content here. You can edit this text by clicking on it.'
       },
-      {
-        type: 'image',
-        name: 'Image',
-        icon: <FaImage />,
-        category: 'basic',
-        defaultProps: {
-          objectFit: 'cover',
-          rounded: true
-        },
-        defaultContent: 'https://via.placeholder.com/600x400'
-      },
+      // image component removed from basic palette as requested
       {
         type: 'button',
         name: 'Button',

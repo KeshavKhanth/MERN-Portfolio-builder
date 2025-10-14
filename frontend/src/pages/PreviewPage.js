@@ -5,6 +5,7 @@ import { getPortfolio } from '../store/slices/portfolioSlice';
 import { ClipLoader } from 'react-spinners';
 import { FaArrowLeft, FaEdit, FaExternalLinkAlt } from 'react-icons/fa';
 import ComponentRenderer from '../components/editor/ComponentRenderer';
+import NavBar from '../components/layout/NavBar';
 
 const PreviewPage = () => {
   const { id } = useParams();
@@ -18,6 +19,19 @@ const PreviewPage = () => {
       dispatch(getPortfolio(id));
     }
   }, [id, dispatch]);
+
+  // Scroll to position hero section just under navbar on initial load
+  useEffect(() => {
+    if (currentPortfolio && !isLoading) {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        const heroElement = document.querySelector('[data-section-type="hero"]');
+        if (heroElement) {
+          heroElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  }, [currentPortfolio, isLoading]);
 
   if (isLoading) {
     return (
@@ -47,7 +61,7 @@ const PreviewPage = () => {
     );
   }
 
-  const components = currentPortfolio.content?.sections || [];
+  const components = (currentPortfolio.content?.sections || []).slice().sort((a, b) => (a.order || 0) - (b.order || 0));
   const customizations = currentPortfolio.customizations || {
     colors: {
       primary: '#007bff',
@@ -61,6 +75,10 @@ const PreviewPage = () => {
       body: 'Open Sans'
     }
   };
+
+  // Extract portfolio name from hero section
+  const heroSection = components.find(c => c.type === 'hero');
+  const portfolioName = heroSection?.content?.title || currentPortfolio.title || 'Portfolio';
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -109,8 +127,9 @@ const PreviewPage = () => {
       </div>
 
       {/* Preview Content */}
+      <NavBar portfolioName={portfolioName} />
       <div 
-        className="min-h-screen"
+        className="min-h-screen pt-4"
         style={{
           backgroundColor: customizations.colors.background,
           color: customizations.colors.text,
@@ -120,14 +139,21 @@ const PreviewPage = () => {
         {components.length > 0 ? (
           <div className="relative">
             {components.map((component) => (
-              <ComponentRenderer
-                key={component.id}
-                component={component}
-                isSelected={false}
-                isEditable={false}
-                customizations={customizations}
-              />
+              <div key={component.id} data-section-type={component.type}>
+                <ComponentRenderer
+                  component={component}
+                  isSelected={false}
+                  isEditable={false}
+                  customizations={customizations}
+                />
+              </div>
             ))}
+            {/* Render footer if present separately at the bottom */}
+            {components.find(c => c.type === 'footer') ? (
+              components.filter(c => c.type === 'footer').map(c => (
+                <ComponentRenderer key={`footer-${c.id}`} component={c} isSelected={false} isEditable={false} customizations={customizations} />
+              ))
+            ) : null}
           </div>
         ) : (
           <div className="flex items-center justify-center min-h-[60vh]">

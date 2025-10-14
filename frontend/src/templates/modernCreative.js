@@ -59,9 +59,9 @@ export const modernCreativeTemplate = {
           style: 'glass'
         },
         socialLinks: [
-          { platform: 'github', url: 'https://github.com' },
-          { platform: 'linkedin', url: 'https://linkedin.com' },
-          { platform: 'dribbble', url: 'https://dribbble.com' }
+          { platform: 'github', url: '' },
+          { platform: 'linkedin', url: '' },
+          { platform: 'email', url: '' }
         ]
       }
     },
@@ -322,10 +322,9 @@ export const modernCreativeTemplate = {
         location: 'San Francisco, CA',
         availability: 'Available for freelance',
         socialLinks: [
-          { platform: 'github', url: 'https://github.com' },
-          { platform: 'linkedin', url: 'https://linkedin.com' },
-          { platform: 'dribbble', url: 'https://dribbble.com' },
-          { platform: 'twitter', url: 'https://twitter.com' }
+          { platform: 'github', url: '' },
+          { platform: 'linkedin', url: '' },
+          { platform: 'email', url: '' }
         ],
         form: {
           fields: ['name', 'email', 'subject', 'message'],

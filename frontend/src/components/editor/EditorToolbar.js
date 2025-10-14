@@ -54,10 +54,42 @@ const EditorToolbar = ({ portfolioId, onTogglePalette, onToggleProperties }) => 
   
   const { currentPortfolio } = useSelector(state => state.portfolio);
 
+  // Email validation function
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  // Validate contact form sections
+  const validateContactForms = () => {
+    const contactSections = sections.filter(section => section.type === 'contact');
+    
+    for (const section of contactSections) {
+      const recipientEmail = section.props?.recipientEmail;
+      
+      if (!recipientEmail || recipientEmail.trim() === '') {
+        toast.error('Please enter a recipient email address for the contact form');
+        return false;
+      }
+      
+      if (!isValidEmail(recipientEmail)) {
+        toast.error('Please enter a valid email address for the contact form');
+        return false;
+      }
+    }
+    
+    return true;
+  };
+
   // Save handler
   const handleSave = async () => {
     if (!portfolioId) {
       toast.error('No portfolio ID found');
+      return;
+    }
+
+    // Validate contact forms before saving
+    if (!validateContactForms()) {
       return;
     }
     

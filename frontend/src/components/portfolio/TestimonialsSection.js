@@ -5,7 +5,7 @@ import { FaStar, FaQuoteLeft, FaChevronLeft, FaChevronRight } from 'react-icons/
 const TestimonialsSection = ({
   content = [],
   title = 'What People Say',
-  subtitle = 'Client testimonials and reviews',
+  subtitle = 'Reviews and testimonials',
   layout = 'carousel',
   isEditing,
   onContentChange,
@@ -13,7 +13,7 @@ const TestimonialsSection = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [testimonials, setTestimonials] = useState(
-    content.length > 0 ? content : [
+    content.length > 0 ? (Array.isArray(content) ? content.map(t => ({ ...(t || {}) })) : []) : [
       {
         id: 1,
         name: 'Sarah Johnson',
@@ -50,11 +50,10 @@ const TestimonialsSection = ({
   };
 
   const handleTestimonialEdit = (index, field, value) => {
-    const updated = [...testimonials];
-    updated[index][field] = value;
+    const updated = testimonials.map((t, i) => (i === index ? { ...(t || {}), [field]: value } : { ...(t || {}) }));
     setTestimonials(updated);
     if (onContentChange) {
-      onContentChange(updated);
+      onContentChange(updated.map(t => ({ ...(t || {}) })));
     }
   };
 
@@ -67,18 +66,18 @@ const TestimonialsSection = ({
       text: 'Add testimonial text here',
       rating: 5
     };
-    const updated = [...testimonials, newTestimonial];
+    const updated = [...testimonials.map(t => ({ ...(t || {}) })), newTestimonial];
     setTestimonials(updated);
     if (onContentChange) {
-      onContentChange(updated);
+      onContentChange(updated.map(t => ({ ...(t || {}) })));
     }
   };
 
   const removeTestimonial = (index) => {
-    const updated = testimonials.filter((_, i) => i !== index);
+    const updated = testimonials.filter((_, i) => i !== index).map(t => ({ ...(t || {}) }));
     setTestimonials(updated);
     if (onContentChange) {
-      onContentChange(updated);
+      onContentChange(updated.map(t => ({ ...(t || {}) })));
     }
   };
 
@@ -119,8 +118,15 @@ const TestimonialsSection = ({
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white p-6 rounded-xl shadow-lg"
+                className="bg-white p-6 rounded-xl shadow-lg relative"
               >
+                {/* Numbered badge in edit mode */}
+                {isEditing && (
+                  <div className="absolute top-3 right-3 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm shadow-lg">
+                    {index + 1}
+                  </div>
+                )}
+                
                 <FaQuoteLeft className="text-3xl text-blue-500 opacity-20 mb-4" />
                 
                 {isEditing ? (
@@ -149,7 +155,7 @@ const TestimonialsSection = ({
                       onClick={() => removeTestimonial(index)}
                       className="px-3 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
                     >
-                      Remove
+                      Remove #{index + 1}
                     </button>
                   </div>
                 ) : (
@@ -219,6 +225,25 @@ const TestimonialsSection = ({
               
               {isEditing ? (
                 <div className="space-y-4">
+                  {/* Numbered testimonial navigation in edit mode */}
+                  <div className="flex items-center justify-center gap-2 mb-4 pb-3 border-b border-gray-200">
+                    <span className="text-sm font-medium text-gray-600 mr-2">Editing testimonial:</span>
+                    {testimonials.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentIndex(index)}
+                        className={`w-8 h-8 rounded-full font-semibold text-sm transition-all ${
+                          index === currentIndex
+                            ? 'bg-blue-600 text-white shadow-lg scale-110'
+                            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        }`}
+                        title={`Edit testimonial ${index + 1}`}
+                      >
+                        {index + 1}
+                      </button>
+                    ))}
+                  </div>
+                  
                   <textarea
                     value={testimonials[currentIndex].text}
                     onChange={(e) => handleTestimonialEdit(currentIndex, 'text', e.target.value)}
@@ -250,10 +275,16 @@ const TestimonialsSection = ({
                   />
                   <div className="flex gap-2">
                     <button
-                      onClick={() => removeTestimonial(currentIndex)}
+                      onClick={() => {
+                        removeTestimonial(currentIndex);
+                        // After removing, adjust currentIndex if needed
+                        if (currentIndex >= testimonials.length - 1 && currentIndex > 0) {
+                          setCurrentIndex(currentIndex - 1);
+                        }
+                      }}
                       className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
                     >
-                      Remove
+                      Remove #{currentIndex + 1}
                     </button>
                     <button
                       onClick={addTestimonial}

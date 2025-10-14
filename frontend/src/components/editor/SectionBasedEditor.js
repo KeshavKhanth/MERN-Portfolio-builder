@@ -323,28 +323,7 @@ const SectionBasedEditor = ({ portfolioId }) => {
           </div>
         </div>
 
-        {/* Properties Panel */}
-        <AnimatePresence>
-          {showProperties && selectedSection && (
-            <motion.div
-              initial={{ x: 320 }}
-              animate={{ x: 0 }}
-              exit={{ x: 320 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-              className="w-80 bg-white shadow-xl z-20 overflow-y-auto border-l border-gray-200"
-            >
-              <PropertiesPanel
-                section={sortedSections.find(s => s.id === selectedSection)}
-                onUpdate={(updates) => handleSectionUpdate(selectedSection, updates)}
-                onDelete={() => {
-                  dispatch(deleteSection(selectedSection));
-                  toast.success('Section deleted');
-                }}
-                customizations={customizations}
-              />
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Properties Panel removed — canvas reclaims full width */}
       </div>
     </div>
   );

@@ -184,10 +184,9 @@ export const modernMinimalistTemplate = {
         size: 'large',
         color: 'brand',
         content: [
-          { platform: 'github', url: 'https://github.com' },
-          { platform: 'linkedin', url: 'https://linkedin.com' },
-          { platform: 'twitter', url: 'https://twitter.com' },
-          { platform: 'dribbble', url: 'https://dribbble.com' }
+          { platform: 'linkedin', url: '' },
+          { platform: 'github', url: '' },
+          { platform: 'email', url: '' }
         ]
       }
     }

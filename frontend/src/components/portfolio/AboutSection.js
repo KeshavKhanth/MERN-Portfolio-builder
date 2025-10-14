@@ -167,34 +167,13 @@ const AboutSection = ({
     </div>
   );
 
-  if (layout === 'side-by-side') {
-    return (
-      <div className="py-16 px-6">
-        <div className="max-w-6xl mx-auto">
-          <div className={`grid md:grid-cols-2 gap-12 items-center ${imagePosition === 'right' ? '' : 'md:flex-row-reverse'}`}>
-            {imagePosition === 'left' ? (
-              <>
-                {renderImage()}
-                {renderContent()}
-              </>
-            ) : (
-              <>
-                {renderContent()}
-                {renderImage()}
-              </>
-            )}
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Stacked layout
+  // Centered layout (image removed) - same for side-by-side and stacked
   return (
     <div className="py-16 px-6">
-      <div className="max-w-4xl mx-auto space-y-12">
-        {renderImage()}
-        {renderContent()}
+      <div className="max-w-3xl mx-auto text-center">
+        <div className="space-y-8">
+          {renderContent()}
+        </div>
       </div>
     </div>
   );

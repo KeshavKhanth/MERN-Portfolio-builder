@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getPortfolioBySlug } from '../store/slices/portfolioSlice';
 import { ClipLoader } from 'react-spinners';
 import ComponentRenderer from '../components/editor/ComponentRenderer';
+import NavBar from '../components/layout/NavBar';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 
@@ -18,6 +19,19 @@ const PortfolioViewPage = () => {
       dispatch(getPortfolioBySlug(slug));
     }
   }, [slug, dispatch]);
+
+  // Scroll to position hero section just under navbar on initial load
+  useEffect(() => {
+    if (publicPortfolio && !isLoading) {
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        const heroElement = document.querySelector('[data-section-type="hero"]');
+        if (heroElement) {
+          heroElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  }, [publicPortfolio, isLoading]);
 
   if (isLoading) {
     return (
@@ -50,7 +64,7 @@ const PortfolioViewPage = () => {
     );
   }
 
-  const components = publicPortfolio.content?.sections || [];
+  const components = (publicPortfolio.content?.sections || []).slice().sort((a, b) => (a.order || 0) - (b.order || 0));
   const customizations = publicPortfolio.customizations || {
     colors: {
       primary: '#007bff',
@@ -69,6 +83,10 @@ const PortfolioViewPage = () => {
   const userName = publicPortfolio.userId ? 
     `${publicPortfolio.userId.firstName} ${publicPortfolio.userId.lastName}` : 
     'Portfolio';
+
+  // Extract portfolio name from hero section
+  const heroSection = components.find(c => c.type === 'hero');
+  const portfolioName = heroSection?.content?.title || userName;
 
   return (
     <>
@@ -90,6 +108,7 @@ const PortfolioViewPage = () => {
         )}
       </Helmet>
 
+      <NavBar portfolioName={portfolioName} />
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -110,14 +129,22 @@ const PortfolioViewPage = () => {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <ComponentRenderer
-                  component={component}
-                  isSelected={false}
-                  isEditable={false}
-                  customizations={customizations}
-                />
+                <div data-section-type={component.type}>
+                  <ComponentRenderer
+                    component={component}
+                    isSelected={false}
+                    isEditable={false}
+                    customizations={customizations}
+                  />
+                </div>
               </motion.div>
             ))}
+            {/* Footer(s) rendered at the end if present */}
+            {components.find(c => c.type === 'footer') ? (
+              components.filter(c => c.type === 'footer').map(c => (
+                <ComponentRenderer key={`footer-${c.id}`} component={c} isSelected={false} isEditable={false} customizations={customizations} />
+              ))
+            ) : null}
           </div>
         ) : (
           <div className="min-h-screen flex items-center justify-center">

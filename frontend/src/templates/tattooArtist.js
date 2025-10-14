@@ -298,10 +298,9 @@ const tattooArtistTemplate = {
         }
       },
       content: [
-        { platform: 'Instagram', url: 'https://instagram.com' },
-        { platform: 'Facebook', url: 'https://facebook.com' },
-        { platform: 'TikTok', url: 'https://tiktok.com' },
-        { platform: 'Pinterest', url: 'https://pinterest.com' }
+        { platform: 'instagram', url: '' },
+        { platform: 'github', url: '' },
+        { platform: 'email', url: '' }
       ]
     }
   ]

@@ -192,10 +192,9 @@ export const creativeDarkTemplate = {
         size: 'medium',
         color: 'gradient',
         content: [
-          { platform: 'dribbble', url: 'https://dribbble.com' },
-          { platform: 'behance', url: 'https://behance.net' },
-          { platform: 'instagram', url: 'https://instagram.com' },
-          { platform: 'linkedin', url: 'https://linkedin.com' }
+          { platform: 'github', url: '' },
+          { platform: 'linkedin', url: '' },
+          { platform: 'email', url: '' }
         ]
       }
     }
