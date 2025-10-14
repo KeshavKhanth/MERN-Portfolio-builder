@@ -12,6 +12,9 @@ import HeadingComponent from '../portfolio/HeadingComponent';
 import ImageComponent from '../portfolio/ImageComponent';
 import ButtonComponent from '../portfolio/ButtonComponent';
 import ColumnsLayout from '../portfolio/ColumnsLayout';
+import OneLineText from '../portfolio/OneLineText';
+import BadgeComponent from '../portfolio/BadgeComponent';
+import Container from '../portfolio/Container';
 
 const SectionRenderer = ({ section, isSelected, isEditable, onUpdate, customizations }) => {
   const { type, props = {}, content = {} } = section;
@@ -32,7 +35,11 @@ const SectionRenderer = ({ section, isSelected, isEditable, onUpdate, customizat
     heading: HeadingComponent,
     image: ImageComponent,
     button: ButtonComponent,
+    onelinetext: OneLineText,
+    'one-line-text': OneLineText,
+    badge: BadgeComponent,
     columns: ColumnsLayout, // Two-column layout
+    container: Container, // Container layout
     custom: null, // Will be handled as empty section with customizations
     empty: null // Explicitly empty section
   };

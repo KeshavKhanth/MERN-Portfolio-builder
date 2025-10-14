@@ -302,23 +302,6 @@ const SectionBasedEditor = ({ portfolioId }) => {
               
               {/* Drop Zone After All Sections */}
               <DropZone index={sortedSections.length} />
-              
-              {/* Bottom Add Section Button (Always Visible) */}
-              {editMode && sortedSections.length > 0 && (
-                <div className="p-8 bg-gradient-to-b from-white to-gray-50">
-                  <div className="text-center">
-                    <button
-                      onClick={() => handleAddSection(sortedSections.length)}
-                      className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold text-lg rounded-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-200 inline-flex items-center gap-3"
-                    >
-                      <FaPlus className="text-xl" /> Add New Section
-                    </button>
-                    <p className="mt-3 text-sm text-gray-500">
-                      Or drag components from the palette
-                    </p>
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>

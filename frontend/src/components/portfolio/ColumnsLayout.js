@@ -14,6 +14,8 @@ import HeadingComponent from './HeadingComponent';
 import TextComponent from './TextComponent';
 import ButtonComponent from './ButtonComponent';
 import ImageComponent from './ImageComponent';
+import OneLineText from './OneLineText';
+import BadgeComponent from './BadgeComponent';
 
 // Component mapping
 const componentMap = {
@@ -30,7 +32,10 @@ const componentMap = {
   heading: HeadingComponent,
   text: TextComponent,
   button: ButtonComponent,
-  image: ImageComponent
+  image: ImageComponent,
+  onelinetext: OneLineText,
+  'one-line-text': OneLineText,
+  badge: BadgeComponent
 };
 
 const ColumnsLayout = ({ 
@@ -58,7 +63,7 @@ const ColumnsLayout = ({
         id: `comp-${Date.now()}`,
         type: item.type,
         props: item.defaultProps || {},
-        content: {}
+        content: item.defaultContent || ''
       };
       const updated = [...leftComponents, newComponent];
       setLeftComponents(updated);
@@ -80,7 +85,7 @@ const ColumnsLayout = ({
         id: `comp-${Date.now()}`,
         type: item.type,
         props: item.defaultProps || {},
-        content: {}
+        content: item.defaultContent || ''
       };
       const updated = [...rightComponents, newComponent];
       setRightComponents(updated);

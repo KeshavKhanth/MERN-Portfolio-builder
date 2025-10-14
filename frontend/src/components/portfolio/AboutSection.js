@@ -73,27 +73,31 @@ const AboutSection = ({
         </h2>
       )}
 
-      {isEditing ? (
-        <textarea
-          value={aboutData.bio}
-          onChange={(e) => handleFieldChange('bio', e.target.value)}
-          className="text-lg leading-relaxed border border-gray-300 rounded p-2 outline-none w-full resize-none"
-          rows="6"
-          style={{ color: customizations?.colors?.text }}
-        />
-      ) : (
-        <p 
-          className="text-lg leading-relaxed"
-          style={{ 
-            color: customizations?.colors?.text,
-            fontFamily: customizations?.fonts?.body 
-          }}
-        >
-          {aboutData.bio}
-        </p>
-      )}
+      {/* About Me Bio - Wider */}
+      <div className="max-w-5xl mx-auto">
+        {isEditing ? (
+          <textarea
+            value={aboutData.bio}
+            onChange={(e) => handleFieldChange('bio', e.target.value)}
+            className="text-lg leading-relaxed text-justify border border-gray-300 rounded p-2 outline-none w-full resize-none"
+            rows="6"
+            style={{ color: customizations?.colors?.text }}
+          />
+        ) : (
+          <p 
+            className="text-lg leading-relaxed text-justify"
+            style={{ 
+              color: customizations?.colors?.text,
+              fontFamily: customizations?.fonts?.body 
+            }}
+          >
+            {aboutData.bio}
+          </p>
+        )}
+      </div>
 
-      <div className="space-y-3">
+      {/* Key Highlights - Same Width as About Me Bio */}
+      <div className="space-y-3 max-w-5xl mx-auto text-left">
         <h3 className="text-xl font-semibold mb-3">Key Highlights</h3>
         <ul className="space-y-2">
           {aboutData.highlights.map((highlight, index) => (
@@ -102,9 +106,9 @@ const AboutSection = ({
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="flex items-center"
+              className="flex items-start"
             >
-              <svg className="w-5 h-5 text-blue-600 mr-3" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
               {isEditing ? (
@@ -123,7 +127,7 @@ const AboutSection = ({
                   </button>
                 </div>
               ) : (
-                <span>{highlight}</span>
+                <span className="flex-1">{highlight}</span>
               )}
             </motion.li>
           ))}
@@ -170,7 +174,7 @@ const AboutSection = ({
   // Centered layout (image removed) - same for side-by-side and stacked
   return (
     <div className="py-16 px-6">
-      <div className="max-w-3xl mx-auto text-center">
+      <div className="max-w-6xl mx-auto text-center">
         <div className="space-y-8">
           {renderContent()}
         </div>

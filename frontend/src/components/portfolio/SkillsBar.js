@@ -89,7 +89,7 @@ const SkillsBar = ({
         Skills & Expertise
       </h2>
 
-      <div className="max-w-4xl mx-auto text-center mb-6">
+      <div className="max-w-5xl mx-auto mb-6">
         {isEditing ? (
           <textarea
             value={description}
@@ -99,11 +99,11 @@ const SkillsBar = ({
             }}
             placeholder="Add a short 2-5 line description for this section"
             rows={3}
-            className="w-full max-w-2xl mx-auto p-2 border border-gray-200 rounded resize-y"
+            className="w-full max-w-5xl mx-auto p-2 border border-gray-200 rounded resize-y"
           />
         ) : (
           description ? (
-            <p className="text-gray-600 max-w-2xl mx-auto">{description}</p>
+            <p className="text-gray-600 max-w-5xl mx-auto text-justify">{description}</p>
           ) : null
         )}
       </div>
@@ -117,7 +117,8 @@ const SkillsBar = ({
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.04 }}
-              className="group relative bg-gradient-to-br from-gray-50 to-white p-4 rounded-xl border border-gray-300 hover:border-blue-500 hover:shadow-md transition-all duration-300"
+              whileHover={!isEditing ? { scale: 1.05, y: -5 } : {}}
+              className={`group relative bg-gradient-to-br from-gray-100 to-gray-50 p-4 rounded-xl border border-gray-400 transition-all duration-300 ${!isEditing ? 'hover:from-gray-200 hover:to-gray-100 hover:shadow-lg' : ''}`}
             >
               <div className="flex-1">
                 <div className="flex justify-between items-center">
@@ -138,7 +139,7 @@ const SkillsBar = ({
                     </div>
                   ) : (
                     <>
-                      <span className="font-semibold text-gray-800 text-center w-full group-hover:text-blue-600 transition-colors">{skill.name}</span>
+                      <span className="font-semibold text-gray-800 text-center w-full group-hover:text-gray-900 transition-colors">{skill.name}</span>
                     </>
                   )}
                 </div>

@@ -166,48 +166,50 @@ const ContactForm = ({
             Social Links
           </h2>
 
-          {/* Social Links Container */}
-          <div className="p-6 rounded-xl bg-white shadow-lg border border-gray-100">
-
-          <div className="space-y-4 flex flex-col items-center">
-            {links.filter(link => link.platform && link.url).map((link, index) => {
-              const Icon = socialIcons[link.platform];
-              const color = socialColors[link.platform];
-              
-              return (
-                <motion.a
-                  key={index}
-                  href={formatUrl(link.url, link.platform)}
-                  target={link.platform !== 'email' ? "_blank" : undefined}
-                  rel={link.platform !== 'email' ? "noopener noreferrer" : undefined}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="w-2/5 flex items-center justify-center gap-4 p-5 rounded-xl bg-gradient-to-br from-white to-gray-50 border-2 border-gray-200 hover:border-transparent hover:shadow-2xl hover:scale-105 transition-all duration-300 group relative overflow-hidden"
-                  style={{
-                    '--hover-color': color
-                  }}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent to-transparent group-hover:from-blue-50 group-hover:to-purple-50 transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
-                  {Icon && (
-                    <div 
-                      className="text-3xl transition-all duration-300 group-hover:scale-125 group-hover:rotate-6 relative z-10"
-                      style={{ color }}
+          {/* Social Links Display - Only show in preview/live mode */}
+          {!isEditing && (
+            <div className="p-6 rounded-xl bg-white shadow-lg border border-gray-100">
+              <div className="space-y-4 flex flex-col items-center px-9">
+                {links.filter(link => link.platform && link.url).map((link, index) => {
+                  const Icon = socialIcons[link.platform];
+                  const color = socialColors[link.platform];
+                  
+                  return (
+                    <motion.a
+                      key={index}
+                      href={formatUrl(link.url, link.platform)}
+                      target={link.platform !== 'email' ? "_blank" : undefined}
+                      rel={link.platform !== 'email' ? "noopener noreferrer" : undefined}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="w-2/5 flex items-center justify-center gap-4 p-5 rounded-xl bg-gradient-to-br from-white to-gray-50 border-2 border-gray-200 hover:border-transparent hover:shadow-2xl hover:scale-105 transition-all duration-300 group relative overflow-hidden"
+                      style={{
+                        '--hover-color': color
+                      }}
                     >
-                      <Icon />
-                    </div>
-                  )}
-                  <div className="relative z-10">
-                    <p className="font-semibold capitalize text-gray-700 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
-                      {link.platform}
-                    </p>
-                  </div>
-                </motion.a>
-              );
-            })}
-          </div>
-          </div>
+                      <div className="absolute inset-0 bg-gradient-to-br from-transparent to-transparent group-hover:from-blue-50 group-hover:to-purple-50 transition-all duration-300 opacity-0 group-hover:opacity-100"></div>
+                      {Icon && (
+                        <div 
+                          className="text-3xl transition-all duration-300 group-hover:scale-125 group-hover:rotate-6 relative z-10"
+                          style={{ color }}
+                        >
+                          <Icon />
+                        </div>
+                      )}
+                      <div className="relative z-10">
+                        <p className="font-semibold capitalize text-gray-700 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-purple-600 transition-all duration-300">
+                          {link.platform}
+                        </p>
+                      </div>
+                    </motion.a>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
+          {/* Social Links Management - Only show in edit mode */}
           {isEditing && (
             <div className="mt-8 p-4 bg-purple-50 rounded-lg border border-purple-200">
               <p className="text-sm font-medium mb-3">Manage Social Links:</p>

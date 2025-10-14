@@ -17,6 +17,8 @@ import TextSection from '../portfolio/TextSection';
 import HeadingComponent from '../portfolio/HeadingComponent';
 import ImageComponent from '../portfolio/ImageComponent';
 import ButtonComponent from '../portfolio/ButtonComponent';
+import OneLineText from '../portfolio/OneLineText';
+import BadgeComponent from '../portfolio/BadgeComponent';
 import HeroSection from '../portfolio/HeroSection';
 import AboutSection from '../portfolio/AboutSection';
 import SkillsBar from '../portfolio/SkillsBar';
@@ -29,6 +31,7 @@ import FooterSection from '../portfolio/FooterSection';
 import ServicesSection from '../portfolio/ServicesSection';
 import TestimonialsSection from '../portfolio/TestimonialsSection';
 import ColumnsLayout from '../portfolio/ColumnsLayout';
+import Container from '../portfolio/Container';
 
 const componentMap = {
   text: (props) => {
@@ -42,6 +45,9 @@ const componentMap = {
   heading: HeadingComponent,
   image: ImageComponent,
   button: ButtonComponent,
+  onelinetext: OneLineText,
+  'one-line-text': OneLineText,
+  badge: BadgeComponent,
   hero: HeroSection,
   about: AboutSection,
   skills: SkillsBar,
@@ -59,6 +65,7 @@ const componentMap = {
   cta: CTASection,
   footer: FooterSection,
   columns: ColumnsLayout, // Two-column layout
+  container: Container, // Container layout
   custom: null, // Custom sections
   empty: null, // Empty sections
   // Add more component mappings as needed

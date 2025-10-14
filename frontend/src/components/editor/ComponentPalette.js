@@ -8,7 +8,6 @@ import {
   FaMousePointer,
   FaColumns,
   FaVideo,
-  FaCode,
   FaEnvelope,
   FaShareAlt,
   FaTh,
@@ -19,7 +18,9 @@ import {
   FaRocket,
   FaCogs,
   FaLayerGroup,
-  FaGripVertical
+  FaGripVertical,
+  FaMinus,
+  FaTag
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 
@@ -113,7 +114,7 @@ const ComponentPalette = () => {
       },
       {
         type: 'projects',
-        name: 'Projects',
+        name: 'Project Grid 1',
         icon: <FaTh />,
         category: 'sections',
         defaultProps: {
@@ -158,7 +159,7 @@ const ComponentPalette = () => {
       },
       {
         type: 'contact',
-        name: 'Contact Form',
+        name: 'Contact Form & Social Links',
         icon: <FaEnvelope />,
         category: 'sections',
         defaultProps: {
@@ -198,7 +199,7 @@ const ComponentPalette = () => {
       },
       {
         type: 'text',
-        name: 'Text Block',
+        name: 'Text Box',
         icon: <FaAlignLeft />,
         category: 'basic',
         defaultProps: {
@@ -206,6 +207,29 @@ const ComponentPalette = () => {
           fontSize: 'base'
         },
         defaultContent: 'Add your text content here. You can edit this text by clicking on it.'
+      },
+      {
+        type: 'onelinetext',
+        name: 'Single Line Text',
+        icon: <FaMinus />,
+        category: 'basic',
+        defaultProps: {
+          align: 'left',
+          fontSize: 'base'
+        },
+        defaultContent: 'Single line text here'
+      },
+      {
+        type: 'badge',
+        name: 'Badge',
+        icon: <FaTag />,
+        category: 'basic',
+        defaultProps: {
+          variant: 'primary',
+          size: 'medium',
+          rounded: 'full'
+        },
+        defaultContent: 'Badge'
       },
       // image component removed from basic palette as requested
       {
@@ -219,17 +243,6 @@ const ComponentPalette = () => {
           rounded: true
         },
         defaultContent: 'Click Me'
-      },
-      {
-        type: 'divider',
-        name: 'Divider',
-        icon: <FaGripVertical />,
-        category: 'basic',
-        defaultProps: {
-          dividerStyle: 'solid',  // Renamed from 'style' to avoid conflict
-          color: '#e5e7eb',
-          margin: '2rem'
-        }
       }
     ],
     layout: [
@@ -249,12 +262,25 @@ const ComponentPalette = () => {
         icon: <FaSquare />,
         category: 'layout',
         defaultProps: {
-          maxWidth: '1200px',
-          padding: '2rem'
+          columns: 2
         }
       }
     ],
     media: [
+      {
+        type: 'image',
+        name: 'Image',
+        icon: <FaImage />,
+        category: 'media',
+        defaultProps: {
+          objectFit: 'cover',
+          rounded: true,
+          width: '100%',
+          height: 'auto',
+          alt: 'Portfolio Image'
+        },
+        defaultContent: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800'
+      },
       {
         type: 'video',
         name: 'Video',
@@ -265,17 +291,6 @@ const ComponentPalette = () => {
           controls: true
         },
         defaultContent: 'https://www.youtube.com/embed/dQw4w9WgXcQ'
-      },
-      {
-        type: 'codeBlock',
-        name: 'Code Block',
-        icon: <FaCode />,
-        category: 'media',
-        defaultProps: {
-          language: 'javascript',
-          theme: 'dark'
-        },
-        defaultContent: '// Your code here\nconst hello = "World";'
       }
     ]
   };

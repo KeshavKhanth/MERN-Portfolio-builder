@@ -102,7 +102,14 @@ const PortfolioGrid = ({ content = [], columns = 3, gap = 'medium', hover = 'zoo
 
       <div className={`max-w-7xl mx-auto grid ${columnsClasses[columns]} ${gapClasses[gap]}`}>
         {projects.map((project, index) => (
-          <motion.div key={index} initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.03 }} className={`bg-white rounded-lg shadow overflow-hidden ${hoverEffects[hover]} ${isEditing ? 'border-2 border-dashed border-gray-300' : ''}`}>
+          <motion.div 
+            key={index} 
+            initial={{ opacity: 0, y: 12 }} 
+            animate={{ opacity: 1, y: 0 }} 
+            transition={{ delay: index * 0.03 }}
+            whileHover={!isEditing ? { scale: 1.05, y: -5 } : {}}
+            className={`bg-white rounded-lg shadow overflow-hidden hover:shadow-lg transition-all duration-300 ${hoverEffects[hover]} ${isEditing ? 'border-2 border-dashed border-gray-300' : ''}`}
+          >
             <div className="relative h-44 bg-gray-100 overflow-hidden">
               <img src={project.image || ''} alt={project.title} className="w-full h-full object-cover" />
               {isEditing && (
@@ -150,9 +157,9 @@ const PortfolioGrid = ({ content = [], columns = 3, gap = 'medium', hover = 'zoo
                   </div>
                 </div>
               ) : (
-                <div className="flex gap-4 items-center">
-                    {project.link && <a href={normalizeUrl(project.link)} target="_blank" rel="noopener noreferrer" className="text-blue-600">View Project</a>}
-                    {project.source && <a href={normalizeUrl(project.source)} target="_blank" rel="noopener noreferrer" className="text-green-600">View Source</a>}
+                <div className="flex justify-between items-center">
+                    {project.link && <a href={normalizeUrl(project.link)} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors text-sm font-medium">Live Demo</a>}
+                    {project.source && <a href={normalizeUrl(project.source)} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium">View Source</a>}
                 </div>
               )}
             </div>

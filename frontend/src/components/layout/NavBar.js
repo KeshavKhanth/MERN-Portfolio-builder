@@ -43,9 +43,7 @@ const NavBar = ({ className = '', portfolioName = 'Portfolio' }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="h-14 flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <button onClick={() => scrollTo('hero')} className="flex items-center gap-2 focus:outline-none" aria-label="Go to home">
-                <span className="text-lg font-semibold text-gray-800">{portfolioName}</span>
-              </button>
+              {/* Portfolio name removed */}
             </div>
 
             <div className="hidden sm:flex items-center gap-6" role="menubar" aria-label="Main menu">

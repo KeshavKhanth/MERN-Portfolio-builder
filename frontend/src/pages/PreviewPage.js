@@ -131,15 +131,23 @@ const PreviewPage = () => {
       <div 
         className="min-h-screen pt-4"
         style={{
-          backgroundColor: customizations.colors.background,
-          color: customizations.colors.text,
+          backgroundColor: '#E8E4DC',
+          color: '#1e3a8a',
           fontFamily: customizations.fonts.body
         }}
       >
         {components.length > 0 ? (
           <div className="relative">
-            {components.map((component) => (
+            {components.map((component, index) => (
               <div key={component.id} data-section-type={component.type}>
+                {/* Separator Line with Shadow (not before first section) */}
+                {index > 0 && (
+                  <div className="my-12 px-6">
+                    <div className="max-w-7xl mx-auto">
+                      <hr className="border-t border-gray-300 shadow-sm" />
+                    </div>
+                  </div>
+                )}
                 <ComponentRenderer
                   component={component}
                   isSelected={false}
@@ -176,6 +184,17 @@ const PreviewPage = () => {
             </div>
           </div>
         )}
+        
+        {/* Default Footer - Always visible */}
+        <footer className="bg-gray-900 text-white py-8 mt-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center">
+              <p className="text-gray-400 text-sm">
+                All rights reserved © {new Date().getFullYear()}
+              </p>
+            </div>
+          </div>
+        </footer>
       </div>
     </div>
   );
