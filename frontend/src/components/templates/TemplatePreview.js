@@ -8,7 +8,8 @@ import {
   FaLayerGroup,
   FaPalette,
   FaMobileAlt,
-  FaRocket
+  FaRocket,
+  FaPlus
 } from 'react-icons/fa';
 import DynamicTemplateThumbnail from './DynamicTemplateThumbnail';
 
@@ -17,6 +18,16 @@ const TemplatePreview = ({ template, onSelect, onPreview, isSelected }) => {
 
   // Enhanced template data with real details from template files
   const defaultTemplates = {
+    'blank-template': {
+      name: 'Blank Template',
+      description: 'Start from scratch with a completely blank canvas',
+      features: ['No Default Components', 'Full Customization', 'Build Your Own', 'Complete Freedom'],
+      colors: ['#3b82f6', '#6b7280', '#10b981', '#ffffff'],
+      gradient: 'linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%)',
+      sections: 0,
+      rating: 5.0,
+      isBlank: true
+    },
     'modern-minimalist': {
       name: template.name || 'Modern Minimalist',
       description: template.description || 'Clean and elegant design with focus on content',
@@ -141,19 +152,80 @@ const TemplatePreview = ({ template, onSelect, onPreview, isSelected }) => {
     }
   };
 
-  return (
+  return templateData.isBlank ? (
+    // Blank template - entire card is just the plus symbol
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
-      whileHover={{ y: -8, transition: { duration: 0.2 } }}
-      className={`relative bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer group ${
+      whileHover={{ 
+        y: -8,
+        transition: { duration: 0.3 } 
+      }}
+      className={`relative bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl cursor-pointer group transition-all duration-300 ${
         isSelected ? 'ring-4 ring-blue-500 ring-offset-2' : ''
       }`}
       onClick={() => onSelect(template)}
     >
+      <div className="w-full h-full flex items-center justify-center bg-white" style={{ minHeight: '350px' }}>
+        {/* Container for dotted box and text */}
+        <div className="flex flex-col items-center justify-center gap-4">
+          {/* Dotted border container - only plus symbol */}
+          <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 group-hover:border-gray-400 transition-colors duration-300 flex items-center justify-center">
+            {/* Plus symbol - centered and equal dimensions */}
+            <div className="w-20 h-20">
+              <svg 
+                width="100%" 
+                height="100%" 
+                viewBox="0 0 100 100" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {/* Horizontal bar */}
+                <rect x="10" y="47" width="80" height="6" rx="3" fill="#9CA3AF" className="group-hover:fill-[#4B5563] transition-colors duration-300"></rect>
+                {/* Vertical bar */}
+                <rect x="47" y="10" width="6" height="80" rx="3" fill="#9CA3AF" className="group-hover:fill-[#4B5563] transition-colors duration-300"></rect>
+              </svg>
+            </div>
+          </div>
+          
+          {/* Text below - outside dotted border */}
+          <p className="text-gray-500 group-hover:text-gray-700 font-medium text-sm transition-colors duration-300 whitespace-nowrap">
+            Blank Template
+          </p>
+        </div>
+      </div>
+      {/* Selected Badge */}
+      {isSelected && (
+        <div className="absolute top-4 right-4 bg-blue-500 text-white p-2 rounded-full z-10 shadow-lg">
+          <FaCheck className="text-sm" />
+        </div>
+      )}
+    </motion.div>
+  ) : (
+    // Regular template card
+    <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        whileHover={{ y: -8, transition: { duration: 0.2 } }}
+        className={`relative bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer group ${
+          isSelected ? 'ring-4 ring-blue-500 ring-offset-2' : ''
+        }`}
+        onClick={() => onSelect(template)}
+      >
       {/* Dynamic Template Preview */}
       <div className="relative h-56 overflow-hidden">
-        {template.sections && template.sections.length > 0 ? (
+        {templateData.isBlank ? (
+          <div 
+            className="w-full h-full flex items-center justify-center bg-white"
+          >
+            <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              {/* Horizontal bar */}
+              <rect x="20" y="45" width="60" height="10" rx="5" fill="#6B7280"/>
+              {/* Vertical bar */}
+              <rect x="45" y="20" width="10" height="60" rx="5" fill="#6B7280"/>
+            </svg>
+          </div>
+        ) : template.sections && template.sections.length > 0 ? (
           <DynamicTemplateThumbnail 
             template={template}
             sections={template.sections}
@@ -178,22 +250,24 @@ const TemplatePreview = ({ template, onSelect, onPreview, isSelected }) => {
           </div>
         )}
 
-        {/* Overlay on Hover */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileHover={{ opacity: 1 }}
-          className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex items-end p-4"
-        >
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              handlePreviewClick();
-            }}
-            className="px-4 py-2 bg-white/90 backdrop-blur text-gray-900 rounded-lg font-medium hover:bg-white transition-colors flex items-center gap-2"
+        {/* Overlay on Hover - Hide for blank template */}
+        {!templateData.isBlank && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileHover={{ opacity: 1 }}
+            className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent flex items-end p-4"
           >
-            <FaEye /> Quick Preview
-          </button>
-        </motion.div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                handlePreviewClick();
+              }}
+              className="px-4 py-2 bg-white/90 backdrop-blur text-gray-900 rounded-lg font-medium hover:bg-white transition-colors flex items-center gap-2"
+            >
+              <FaEye /> Quick Preview
+            </button>
+          </motion.div>
+        )}
 
         {/* Selected Badge */}
         {isSelected && (
@@ -202,54 +276,60 @@ const TemplatePreview = ({ template, onSelect, onPreview, isSelected }) => {
           </div>
         )}
 
-        {/* Rating Badge */}
-        <div className="absolute top-4 left-4 bg-black/50 backdrop-blur text-white px-3 py-1 rounded-full flex items-center gap-1">
-          <FaStar className="text-yellow-400 text-sm" />
-          <span className="text-sm font-medium">{templateData.rating}</span>
-        </div>
+        {/* Free/Premium Badge - Hide for blank template */}
+        {!templateData.isBlank && (
+          <div className={`absolute top-4 left-4 backdrop-blur text-white px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wide ${
+            template.slug === 'creative-dark' 
+              ? 'bg-gradient-to-r from-purple-600 to-pink-600' 
+              : 'bg-gradient-to-r from-blue-500 to-blue-600'
+          }`}>
+            {template.slug === 'creative-dark' ? 'Premium' : 'Free'}
+          </div>
+        )}
       </div>
 
-      {/* Template Details */}
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-2">
-          {templateData.name}
-        </h3>
-        <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-          {templateData.description}
-        </p>
+      {/* Template Details - Hide completely for blank template */}
+      {!templateData.isBlank && (
+        <div className="p-6">
+          <h3 className="text-xl font-bold text-gray-900 mb-2">
+            {templateData.name}
+          </h3>
+          <p className="text-gray-600 text-sm mb-4 line-clamp-2">
+            {templateData.description}
+          </p>
 
-        {/* Features */}
-        <div className="flex flex-wrap gap-2 mb-4">
-          {templateData.features.slice(0, 3).map((feature, index) => (
-            <span 
-              key={index}
-              className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-lg"
-            >
-              {feature}
-            </span>
-          ))}
-        </div>
+          {/* Features */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {templateData.features.slice(0, 3).map((feature, index) => (
+              <span 
+                key={index}
+                className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-lg"
+              >
+                {feature}
+              </span>
+            ))}
+          </div>
 
-        {/* Stats */}
-        <div className="flex items-center justify-between text-sm text-gray-500">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-1">
-              <FaLayerGroup className="text-xs" />
-              <span>{templateData.sections} sections</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <FaMobileAlt className="text-xs" />
-              <span>Responsive</span>
+          {/* Stats */}
+          <div className="flex items-center justify-between text-sm text-gray-500">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-1">
+                <FaLayerGroup className="text-xs" />
+                <span>{templateData.sections} sections</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <FaMobileAlt className="text-xs" />
+                <span>Responsive</span>
+              </div>
             </div>
           </div>
-        </div>
 
-        {/* Color Palette */}
-        <div className="flex items-center gap-1 mt-4">
-          <FaPalette className="text-xs text-gray-400" />
-          <div className="flex gap-1">
-            {templateData.colors.map((color, index) => (
-              <div
+          {/* Color Palette */}
+          <div className="flex items-center gap-1 mt-4">
+            <FaPalette className="text-xs text-gray-400" />
+            <div className="flex gap-1">
+              {templateData.colors.map((color, index) => (
+                <div
                 key={index}
                 className="w-5 h-5 rounded-full border border-gray-200"
                 style={{ backgroundColor: color }}
@@ -299,6 +379,7 @@ const TemplatePreview = ({ template, onSelect, onPreview, isSelected }) => {
           </button>
         </div>
       </div>
+      )}
 
       {/* Detailed Preview Modal (can be expanded) */}
       {showDetails && (

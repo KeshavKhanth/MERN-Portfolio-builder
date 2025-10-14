@@ -90,9 +90,9 @@ const ComponentPalette = () => {
           bio: 'Tell your story here. Share your journey, passion, and what drives you.',
           image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600',
           highlights: [
-            'Your Experience',
-            'Your Expertise',
-            'Your Passion'
+            'Key highlight 1',
+            'Key highlight 2',
+            'Key highlight 3'
           ]
         }
       },
@@ -106,10 +106,10 @@ const ComponentPalette = () => {
           animated: true
         },
         defaultContent: [
-          { name: 'JavaScript', level: 90, category: 'Programming' },
-          { name: 'React', level: 85, category: 'Framework' },
-          { name: 'Node.js', level: 80, category: 'Backend' },
-          { name: 'MongoDB', level: 75, category: 'Database' }
+          { name: 'Skill 1', level: 80, category: 'Category' },
+          { name: 'Skill 2', level: 75, category: 'Category' },
+          { name: 'Skill 3', level: 70, category: 'Category' },
+          { name: 'Skill 4', level: 85, category: 'Category' }
         ]
       },
       {
@@ -125,17 +125,24 @@ const ComponentPalette = () => {
         defaultContent: [
           {
             title: 'Project 1',
-            description: 'Description of your amazing project',
+            description: 'A brief description',
             image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600',
             link: '#',
-            tags: ['React', 'Node.js']
+            tags: ['Tool 1', 'Tool 2']
           },
           {
             title: 'Project 2',
-            description: 'Another great project you worked on',
+            description: 'A brief description',
             image: 'https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=600',
             link: '#',
-            tags: ['JavaScript', 'CSS']
+            tags: ['Tool 1', 'Tool 2']
+          },
+          {
+            title: 'Project 3',
+            description: 'A brief description',
+            image: 'https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=600',
+            link: '#',
+            tags: ['Tool 1', 'Tool 2', 'Tool 3']
           }
         ]
       },
@@ -165,7 +172,12 @@ const ComponentPalette = () => {
         defaultProps: {
           fields: ['name', 'email', 'subject', 'message'],
           formStyle: 'modern',  // Renamed from 'style' to avoid conflict
-          showLabels: true
+          showLabels: true,
+          socialLinks: [
+            { platform: 'linkedin', url: '' },
+            { platform: 'github', url: '' },
+            { platform: 'email', url: '' }
+          ]
         }
       },
       {

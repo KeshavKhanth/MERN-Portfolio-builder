@@ -4,8 +4,10 @@ import { professionalCorporateTemplate } from './professionalCorporate';
 import { developerFocusedTemplate } from './developerFocused';
 import { modernCreativeTemplate } from './modernCreative';
 import photographerMinimal from './photographerMinimal';
+import { blankTemplate } from './blankTemplate';
 
 export const templates = {
+  'blank-template': blankTemplate,
   'modern-minimalist': modernMinimalistTemplate,
   'creative-dark': creativeDarkTemplate,
   // 'professional-corporate': professionalCorporateTemplate,
@@ -20,6 +22,7 @@ export const getTemplate = (templateId) => {
 
 // Fixed rating values for consistent sorting
 const templateRatings = {
+  'blank-template': 5.0,
   'modern-minimalist': 4.8,
   'creative-dark': 4.9,
   'professional-corporate': 4.7,
@@ -31,6 +34,7 @@ const templateRatings = {
 
 // Define a fixed order for consistent "no sort" display
 const templateOrder = [
+  'blank-template',
   'modern-minimalist',
   'creative-dark', 
   'developer-focused'

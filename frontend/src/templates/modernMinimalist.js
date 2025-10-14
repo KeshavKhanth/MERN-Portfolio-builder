@@ -40,10 +40,9 @@ export const modernMinimalistTemplate = {
                 with creative problem-solving to deliver exceptional digital solutions.`,
           image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=600',
           highlights: [
-            '5+ Years of Experience',
-            'Full Stack Development',
-            'Cloud Architecture',
-            'UI/UX Design'
+            'Key highlight 1',
+            'Key highlight 2',
+            'Key highlight 3'
           ],
           stats: [
             { label: 'Projects Completed', value: '50+' },
@@ -61,12 +60,10 @@ export const modernMinimalistTemplate = {
         displayStyle: 'bar',
         animated: true,
         content: [
-          { name: 'React.js', level: 95, category: 'Frontend', color: '#61DAFB' },
-          { name: 'Node.js', level: 90, category: 'Backend', color: '#339933' },
-          { name: 'TypeScript', level: 85, category: 'Language', color: '#3178C6' },
-          { name: 'MongoDB', level: 80, category: 'Database', color: '#47A248' },
-          { name: 'AWS', level: 75, category: 'Cloud', color: '#FF9900' },
-          { name: 'Docker', level: 85, category: 'DevOps', color: '#2496ED' }
+          { name: 'Skill 1', level: 80, category: 'Category', color: '#3b82f6' },
+          { name: 'Skill 2', level: 75, category: 'Category', color: '#10b981' },
+          { name: 'Skill 3', level: 70, category: 'Category', color: '#f59e0b' },
+          { name: 'Skill 4', level: 85, category: 'Category', color: '#8b5cf6' }
         ]
       }
     },
@@ -80,52 +77,28 @@ export const modernMinimalistTemplate = {
         hover: 'zoom',
         content: [
           {
-            title: 'E-Commerce Platform',
-            description: 'Full-stack e-commerce solution with React and Node.js',
+            title: 'Project 1',
+            description: 'A brief description',
             image: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400',
-            link: 'https://github.com',
-            tags: ['React', 'Node.js', 'MongoDB', 'Stripe'],
-            category: 'Web App'
+            link: '#',
+            tags: ['Tool 1', 'Tool 2'],
+            category: 'Category'
           },
           {
-            title: 'Task Management App',
-            description: 'Collaborative project management tool with real-time updates',
+            title: 'Project 2',
+            description: 'A brief description',
             image: 'https://images.unsplash.com/photo-1611224923853-80b023f02d71?w=600&h=400',
-            link: 'https://github.com',
-            tags: ['React', 'Socket.io', 'Express', 'PostgreSQL'],
-            category: 'SaaS'
+            link: '#',
+            tags: ['Tool 1', 'Tool 2'],
+            category: 'Category'
           },
           {
-            title: 'Weather Dashboard',
-            description: 'Beautiful weather app with forecasting and analytics',
+            title: 'Project 3',
+            description: 'A brief description',
             image: 'https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?w=600&h=400',
-            link: 'https://github.com',
-            tags: ['Vue.js', 'Chart.js', 'OpenWeather API'],
-            category: 'Dashboard'
-          },
-          {
-            title: 'Social Media Analytics',
-            description: 'Analytics dashboard for social media performance tracking',
-            image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400',
-            link: 'https://github.com',
-            tags: ['React', 'D3.js', 'Python', 'Flask'],
-            category: 'Analytics'
-          },
-          {
-            title: 'Blog Platform',
-            description: 'Modern blogging platform with markdown support',
-            image: 'https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=600&h=400',
-            link: 'https://github.com',
-            tags: ['Next.js', 'MDX', 'Tailwind CSS'],
-            category: 'CMS'
-          },
-          {
-            title: 'Video Streaming App',
-            description: 'Netflix-like streaming platform with adaptive bitrate',
-            image: 'https://images.unsplash.com/photo-1536240478700-b869070f9279?w=600&h=400',
-            link: 'https://github.com',
-            tags: ['React', 'HLS.js', 'AWS S3', 'CloudFront'],
-            category: 'Media'
+            link: '#',
+            tags: ['Tool 1', 'Tool 2', 'Tool 3'],
+            category: 'Category'
           }
         ]
       }
@@ -168,35 +141,25 @@ export const modernMinimalistTemplate = {
         fields: ['name', 'email', 'subject', 'message'],
         formStyle: 'modern',
         showLabels: true,
+        socialLinks: [
+          { platform: 'linkedin', url: '' },
+          { platform: 'github', url: '' },
+          { platform: 'email', url: '' }
+        ],
         contactInfo: {
           email: 'john@example.com',
           phone: '+1 234 567 8900',
           location: 'San Francisco, CA'
         }
       }
-    },
-    {
-      id: 'footer-section',
-      type: 'socialLinks',
-      order: 7,
-      props: {
-        displayStyle: 'icons',
-        size: 'large',
-        color: 'brand',
-        content: [
-          { platform: 'linkedin', url: '' },
-          { platform: 'github', url: '' },
-          { platform: 'email', url: '' }
-        ]
-      }
     }
   ],
   customizations: {
     colors: {
-      primary: '#3b82f6',
+      primary: '#1e3a8a',
       secondary: '#6b7280',
       accent: '#10b981',
-      background: '#ffffff',
+      background: '#E8E4DC',
       text: '#111827',
       muted: '#9ca3af'
     },

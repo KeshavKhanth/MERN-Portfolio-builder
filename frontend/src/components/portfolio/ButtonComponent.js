@@ -25,11 +25,30 @@ const ButtonComponent = ({
     setShowEditModal(false);
   };
 
+  // Use template colors or fallback to defaults
+  const primaryColor = customizations?.colors?.primary || '#3b82f6';
+  const secondaryColor = customizations?.colors?.secondary || '#6b7280';
+  
   const variantClasses = {
-    primary: `bg-blue-600 text-white hover:bg-blue-700`,
-    secondary: `bg-gray-600 text-white hover:bg-gray-700`,
-    outline: `border-2 border-blue-600 text-blue-600 hover:bg-blue-50`,
-    ghost: `text-blue-600 hover:bg-blue-50`
+    primary: `text-white hover:opacity-90`,
+    secondary: `text-white hover:opacity-90`,
+    outline: `border-2 hover:opacity-80`,
+    ghost: `hover:opacity-80`
+  };
+  
+  const getVariantStyle = () => {
+    switch(variant) {
+      case 'primary':
+        return { backgroundColor: primaryColor };
+      case 'secondary':
+        return { backgroundColor: secondaryColor };
+      case 'outline':
+        return { borderColor: primaryColor, color: primaryColor };
+      case 'ghost':
+        return { color: primaryColor };
+      default:
+        return { backgroundColor: primaryColor };
+    }
   };
 
   const sizeClasses = {
@@ -103,6 +122,7 @@ const ButtonComponent = ({
         setShowEditModal(true);
       } : undefined}
       className={baseClasses}
+      style={getVariantStyle()}
     >
       {buttonText}
     </ButtonTag>

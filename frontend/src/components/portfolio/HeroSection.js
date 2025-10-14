@@ -134,10 +134,12 @@ const HeroSection = ({
                     const href = heroData.ctaButton?.link || '#'
                     const isFile = /\.(pdf|docx?|zip|txt|rtf)$/i.test(href)
                     const shouldDownload = heroData.ctaButton?.download || isFile
+                    const primaryColor = customizations?.colors?.primary || '#3b82f6';
                     return (
                       <a
                         href={href}
-                        className="px-6 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors duration-200"
+                        className="px-6 py-2 text-white font-semibold rounded-lg hover:opacity-90 transition-all duration-200"
+                        style={{ backgroundColor: primaryColor }}
                         {...(shouldDownload ? { download: true } : {})}
                         target={href.startsWith('http') ? '_blank' : undefined}
                         rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}

@@ -10,8 +10,9 @@ const PortfolioGrid = ({ content = [], columns = 3, gap = 'medium', hover = 'zoo
   const initial = (incomingProjects && incomingProjects.length > 0)
     ? incomingProjects.map(p => ({ ...(p || {}) }))
     : [
-      { title: 'Project 1', description: 'A brief description', image: 'https://via.placeholder.com/400x300', link: '', source: '', tags: ['React'] },
-      { title: 'Project 2', description: 'Another project', image: 'https://via.placeholder.com/400x300', link: '', source: '', tags: ['Node.js'] }
+      { title: 'Project 1', description: 'A brief description', image: 'https://via.placeholder.com/400x300', link: '', source: '', tags: ['Tool 1', 'Tool 2'] },
+      { title: 'Project 2', description: 'A brief description', image: 'https://via.placeholder.com/400x300', link: '', source: '', tags: ['Tool 1', 'Tool 2'] },
+      { title: 'Project 3', description: 'A brief description', image: 'https://via.placeholder.com/400x300', link: '', source: '', tags: ['Tool 1', 'Tool 2', 'Tool 3'] }
     ]
 
   const [projects, setProjects] = useState(initial)
@@ -158,8 +159,8 @@ const PortfolioGrid = ({ content = [], columns = 3, gap = 'medium', hover = 'zoo
                 </div>
               ) : (
                 <div className="flex justify-between items-center">
-                    {project.link && <a href={normalizeUrl(project.link)} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors text-sm font-medium">Live Demo</a>}
-                    {project.source && <a href={normalizeUrl(project.source)} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors text-sm font-medium">View Source</a>}
+                    {project.link && <a href={normalizeUrl(project.link)} target="_blank" rel="noopener noreferrer" className="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-all text-sm font-medium" style={{ backgroundColor: customizations?.colors?.primary || '#1f2937' }}>Live Demo</a>}
+                    {project.source && <a href={normalizeUrl(project.source)} target="_blank" rel="noopener noreferrer" className="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-all text-sm font-medium" style={{ backgroundColor: customizations?.colors?.secondary || '#4b5563' }}>View Source</a>}
                 </div>
               )}
             </div>

@@ -18,10 +18,10 @@ const initialState = {
   zoom: 100,
   customizations: {
     colors: {
-      primary: '#3b82f6',
+      primary: '#1e3a8a',
       secondary: '#6b7280',
       accent: '#10b981',
-      background: '#ffffff',
+      background: '#E8E4DC',
       surface: '#f9fafb',
       text: '#111827',
       textSecondary: '#6b7280',

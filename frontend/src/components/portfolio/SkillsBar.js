@@ -16,10 +16,10 @@ const SkillsBar = ({
     initialSkills.length > 0
       ? initialSkills
       : [
-          { name: 'JavaScript', category: 'Frontend' },
-          { name: 'React', category: 'Frontend' },
-          { name: 'Node.js', category: 'Backend' },
-          { name: 'MongoDB', category: 'Database' }
+          { name: 'Skill 1', category: 'Category' },
+          { name: 'Skill 2', category: 'Category' },
+          { name: 'Skill 3', category: 'Category' },
+          { name: 'Skill 4', category: 'Category' }
         ]
   );
 

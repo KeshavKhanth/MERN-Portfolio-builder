@@ -170,7 +170,7 @@ const ContactForm = ({
           {!isEditing && (
             <div className="p-6 rounded-xl bg-white shadow-lg border border-gray-100">
               <div className="space-y-4 flex flex-col items-center px-9">
-                {links.filter(link => link.platform && link.url).map((link, index) => {
+                {links.filter(link => link.platform).map((link, index) => {
                   const Icon = socialIcons[link.platform];
                   const color = socialColors[link.platform];
                   
@@ -418,11 +418,12 @@ const ContactForm = ({
               type="submit"
               disabled={isSubmitting || isEditing}
               className={`
-                w-full px-6 py-3 bg-blue-600 text-white font-medium rounded-lg
-                hover:bg-blue-700 transition-colors duration-200
+                w-full px-6 py-3 text-white font-medium rounded-lg
+                hover:opacity-90 transition-all duration-200
                 disabled:opacity-50 disabled:cursor-not-allowed
                 ${isSubmitting ? 'animate-pulse' : ''}
               `}
+              style={{ backgroundColor: customizations?.colors?.primary || '#3b82f6' }}
             >
               {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>

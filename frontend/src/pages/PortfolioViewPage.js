@@ -116,7 +116,6 @@ const PortfolioViewPage = () => {
         className="min-h-screen"
         style={{
           backgroundColor: '#E8E4DC',
-          color: '#1e3a8a',
           fontFamily: customizations.fonts.body
         }}
       >

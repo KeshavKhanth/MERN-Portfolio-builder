@@ -14,9 +14,9 @@ const AboutSection = ({
     bio: content.bio || 'Write your professional biography here. Share your journey, passion, and what drives you in your career.',
     image: content.image || 'https://via.placeholder.com/400x400',
     highlights: content.highlights || [
-      'Years of Experience',
-      'Passionate Professional',
-      'Problem Solver'
+      'Key highlight 1',
+      'Key highlight 2',
+      'Key highlight 3'
     ]
   });
 
@@ -98,7 +98,7 @@ const AboutSection = ({
 
       {/* Key Highlights - Same Width as About Me Bio */}
       <div className="space-y-3 max-w-5xl mx-auto text-left">
-        <h3 className="text-xl font-semibold mb-3">Key Highlights</h3>
+        <h3 className="text-xl font-semibold mb-3 text-blue-900">Key Highlights</h3>
         <ul className="space-y-2">
           {aboutData.highlights.map((highlight, index) => (
             <motion.li
@@ -108,7 +108,7 @@ const AboutSection = ({
               transition={{ delay: index * 0.1 }}
               className="flex items-start"
             >
-              <svg className="w-5 h-5 text-blue-600 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+              <svg className="w-5 h-5 text-blue-900 mr-3 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
               {isEditing ? (
@@ -127,7 +127,7 @@ const AboutSection = ({
                   </button>
                 </div>
               ) : (
-                <span className="flex-1">{highlight}</span>
+                <span className="flex-1 text-blue-900">{highlight}</span>
               )}
             </motion.li>
           ))}
