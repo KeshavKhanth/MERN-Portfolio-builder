@@ -11,7 +11,8 @@ import {
   FaSignOutAlt,
   FaUser,
   FaBars,
-  FaTimes
+  FaTimes,
+  FaShieldAlt
 } from 'react-icons/fa';
 import toast from 'react-hot-toast';
 
@@ -36,12 +37,16 @@ const Layout = ({ children }) => {
     { path: '/', label: 'Home', icon: FaHome },
     { path: '/templates', label: 'Templates', icon: FaLayerGroup },
     { path: '/dashboard', label: 'Dashboard', icon: FaThLarge, requireAuth: true },
+    { path: '/admin', label: 'Admin Panel', icon: FaShieldAlt, requireAuth: true, requireAdmin: true },
     { path: '/settings', label: 'Settings', icon: FaCog, requireAuth: true }
   ];
 
-  const filteredLinks = navLinks.filter(link => 
-    !link.requireAuth || (link.requireAuth && isAuthenticated)
-  );
+  const filteredLinks = navLinks.filter(link => {
+    if (link.requireAdmin) {
+      return user?.role === 'admin';
+    }
+    return !link.requireAuth || (link.requireAuth && isAuthenticated);
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">

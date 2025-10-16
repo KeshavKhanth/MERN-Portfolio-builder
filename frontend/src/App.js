@@ -8,6 +8,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { store } from './store/store';
 import PrivateRoute from './components/auth/PrivateRoute';
+import PrivateAdminRoute from './components/auth/PrivateAdminRoute';
 import Layout from './components/layout/Layout';
 
 // Pages
@@ -15,6 +16,7 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import DashboardPage from './pages/DashboardPage';
+import AdminDashboard from './pages/AdminDashboard';
 import TemplatesPage from './pages/TemplatesPage';
 import EditorPage from './pages/EditorPage';
 import PreviewPage from './pages/PreviewPage';
@@ -90,6 +92,11 @@ function App() {
                   <PrivateRoute>
                     <Layout><SettingsPage /></Layout>
                   </PrivateRoute>
+                } />
+                <Route path="/admin" element={
+                  <PrivateAdminRoute>
+                    <AdminDashboard />
+                  </PrivateAdminRoute>
                 } />
               </Routes>
             </div>

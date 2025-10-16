@@ -29,6 +29,7 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const portfolioRoutes = require('./routes/portfolioRoutes');
 const templateRoutes = require('./routes/templateRoutes');
+const adminRoutes = require('./routes/adminRoutesV2');
 
 // Connect to database
 connectDB();
@@ -97,6 +98,16 @@ app.use('/api/auth/register', authLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/portfolios', portfolioRoutes);
 app.use('/api/templates', templateRoutes);
+app.use('/api/admin', adminRoutes);
+
+// 404 handler for API routes only (before serving static files)
+app.use('/api/*', (req, res) => {
+  console.log(`Route not found: ${req.method} ${req.path}`);
+  res.status(404).json({
+    success: false,
+    message: 'API route not found'
+  });
+});
 
 // Health check endpoint
 app.get('/health', (req, res) => {
@@ -104,14 +115,6 @@ app.get('/health', (req, res) => {
     status: 'OK',
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV
-  });
-});
-
-// 404 handler for API routes only (before serving static files)
-app.use('/api/*', (req, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'API route not found'
   });
 });
 

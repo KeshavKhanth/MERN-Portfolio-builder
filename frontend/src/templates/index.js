@@ -3,7 +3,6 @@ import { creativeDarkTemplate } from './creativeDark';
 import { professionalCorporateTemplate } from './professionalCorporate';
 import { developerFocusedTemplate } from './developerFocused';
 import { modernCreativeTemplate } from './modernCreative';
-import photographerMinimal from './photographerMinimal';
 import { blankTemplate } from './blankTemplate';
 
 export const templates = {
@@ -27,7 +26,6 @@ const templateRatings = {
   'creative-dark': 4.9,
   'professional-corporate': 4.7,
   'modern-creative': 5.0,
-  'photographer-minimal': 4.9,
   'developer-focused': 4.6,
   'default': 4.5
 };

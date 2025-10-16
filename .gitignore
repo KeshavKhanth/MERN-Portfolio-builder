@@ -23,3 +23,7 @@ dist/
 frontend/build/
 backend/dist/
 frontend/public/static/
+
+# AI Agent Instructions
+.github/copilot-instructions.md
+
