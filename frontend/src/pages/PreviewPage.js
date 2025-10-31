@@ -131,8 +131,9 @@ const PreviewPage = () => {
       <div
         className="min-h-screen"
         style={{
-          backgroundColor: '#E8E4DC',
-          fontFamily: customizations.fonts.body
+          backgroundColor: customizations.colors?.background || '#ffffff',
+          color: customizations.colors?.text || '#333333',
+          fontFamily: customizations.fonts?.body || 'Inter'
         }}
       >
         {components.length > 0 ? (

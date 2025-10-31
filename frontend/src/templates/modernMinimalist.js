@@ -156,20 +156,46 @@ export const modernMinimalistTemplate = {
   ],
   customizations: {
     colors: {
-      primary: '#1e3a8a',
+      primary: '#3b82f6',
       secondary: '#6b7280',
       accent: '#10b981',
-      background: '#E8E4DC',
+      background: '#ffffff',
+      surface: '#f9fafb',
       text: '#111827',
-      muted: '#9ca3af'
+      textSecondary: '#6b7280',
+      border: '#e5e7eb',
+      success: '#10b981',
+      warning: '#f59e0b',
+      error: '#ef4444'
     },
     fonts: {
       heading: 'Inter',
-      body: 'Open Sans'
+      body: 'Inter'
+    },
+    typography: {
+      scale: 'medium',
+      baseSize: '16px',
+      scaleRatio: 1.25
     },
     spacing: {
-      section: '5rem',
-      container: '1.5rem'
+      containerWidth: '100%',
+      sectionSpacing: '2rem',
+      componentSpacing: '1rem'
+    },
+    layout: {
+      containerWidth: '100%',
+      sectionSpacing: '0px'
+    },
+    animations: {
+      enabled: true,
+      type: 'fade',
+      duration: 'normal',
+      easing: 'ease-in-out'
+    },
+    effects: {
+      shadows: true,
+      gradients: false,
+      blur: false
     }
   }
 };

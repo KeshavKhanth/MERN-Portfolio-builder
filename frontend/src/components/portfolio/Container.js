@@ -117,7 +117,7 @@ const Container = ({
   };
 
   return (
-    <div className="py-12 px-6" style={{ backgroundColor: '#E8E4DC' }}>
+    <div className="py-12 px-6" style={{ backgroundColor: customizations?.colors?.background || 'transparent' }}>
       <motion.div
         ref={isEditing ? drop : null}
         initial={{ opacity: 0, y: 20 }}
@@ -128,7 +128,7 @@ const Container = ({
           ${isEditing ? 'min-h-[300px] border-2 border-dashed rounded-lg p-4' : ''}
           ${isOver && canDrop ? 'border-blue-500 bg-blue-50' : 'border-blue-300'}
         `}
-        style={{ backgroundColor: isEditing ? 'transparent' : '#E8E4DC' }}
+        style={{ backgroundColor: isEditing ? 'transparent' : (customizations?.colors?.surface || 'transparent') }}
       >
         {isEditing && components.length === 0 && (
           <div className="h-full flex items-center justify-center text-gray-400">

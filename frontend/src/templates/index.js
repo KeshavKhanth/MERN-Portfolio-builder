@@ -1,18 +1,10 @@
 import { modernMinimalistTemplate } from './modernMinimalist';
-import { creativeDarkTemplate } from './creativeDark';
-import { professionalCorporateTemplate } from './professionalCorporate';
-import { developerFocusedTemplate } from './developerFocused';
-import { modernCreativeTemplate } from './modernCreative';
 import { blankTemplate } from './blankTemplate';
 
 export const templates = {
   'blank-template': blankTemplate,
-  'modern-minimalist': modernMinimalistTemplate,
-  'creative-dark': creativeDarkTemplate,
-  // 'professional-corporate': professionalCorporateTemplate,
-  'developer-focused': developerFocusedTemplate,
-  // 'modern-creative': modernCreativeTemplate,
-  // 'photographer-minimal': photographerMinimal
+  'modern-minimalist': modernMinimalistTemplate
+  // Other templates hidden - only these two are visible
 };
 
 export const getTemplate = (templateId) => {
@@ -23,19 +15,13 @@ export const getTemplate = (templateId) => {
 const templateRatings = {
   'blank-template': 5.0,
   'modern-minimalist': 4.8,
-  'creative-dark': 4.9,
-  'professional-corporate': 4.7,
-  'modern-creative': 5.0,
-  'developer-focused': 4.6,
   'default': 4.5
 };
 
 // Define a fixed order for consistent "no sort" display
 const templateOrder = [
   'blank-template',
-  'modern-minimalist',
-  'creative-dark', 
-  'developer-focused'
+  'modern-minimalist'
 ];
 
 export const getAllTemplates = () => {

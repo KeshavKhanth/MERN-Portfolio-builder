@@ -25,6 +25,7 @@ import {
   toggleEditMode,
   toggleGrid,
   setZoom,
+  setDevicePreview,
   undo,
   redo
 } from '../../store/slices/editorSlice';
@@ -38,7 +39,6 @@ const EditorToolbar = ({ portfolioId, onTogglePalette, onToggleProperties }) => 
   const navigate = useNavigate();
   const [isSaving, setIsSaving] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
-  const [devicePreview, setDevicePreview] = useState('desktop');
   const [showPublishModal, setShowPublishModal] = useState(false);
   const [showThemeCustomizer, setShowThemeCustomizer] = useState(false);
   
@@ -46,6 +46,7 @@ const EditorToolbar = ({ portfolioId, onTogglePalette, onToggleProperties }) => 
     editMode,
     showGrid,
     zoom,
+    devicePreview,
     sections,
     customizations,
     historyIndex,
@@ -270,21 +271,21 @@ const EditorToolbar = ({ portfolioId, onTogglePalette, onToggleProperties }) => 
           {/* Device Preview */}
           <div className="flex items-center bg-gray-100 rounded-lg p-1">
             <button
-              onClick={() => setDevicePreview('desktop')}
+              onClick={() => dispatch(setDevicePreview('desktop'))}
               className={`p-1.5 rounded ${devicePreview === 'desktop' ? 'bg-white shadow-sm' : ''}`}
               title="Desktop View"
             >
               <FaDesktop className={`text-sm ${devicePreview === 'desktop' ? 'text-blue-600' : 'text-gray-600'}`} />
             </button>
             <button
-              onClick={() => setDevicePreview('tablet')}
+              onClick={() => dispatch(setDevicePreview('tablet'))}
               className={`p-1.5 rounded ${devicePreview === 'tablet' ? 'bg-white shadow-sm' : ''}`}
               title="Tablet View"
             >
               <FaTabletAlt className={`text-sm ${devicePreview === 'tablet' ? 'text-blue-600' : 'text-gray-600'}`} />
             </button>
             <button
-              onClick={() => setDevicePreview('mobile')}
+              onClick={() => dispatch(setDevicePreview('mobile'))}
               className={`p-1.5 rounded ${devicePreview === 'mobile' ? 'bg-white shadow-sm' : ''}`}
               title="Mobile View"
             >

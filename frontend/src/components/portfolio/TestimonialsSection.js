@@ -127,7 +127,10 @@ const TestimonialsSection = ({
                   </div>
                 )}
                 
-                <FaQuoteLeft className="text-3xl text-blue-500 opacity-20 mb-4" />
+                <FaQuoteLeft 
+                  className="text-3xl opacity-20 mb-4" 
+                  style={{ color: customizations?.colors?.primary || '#3b82f6' }}
+                />
                 
                 {isEditing ? (
                   <div className="space-y-3">

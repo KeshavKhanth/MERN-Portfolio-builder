@@ -30,7 +30,8 @@ const SectionBasedEditor = ({ portfolioId }) => {
     sections, 
     selectedSection, 
     editMode, 
-    zoom, 
+    zoom,
+    devicePreview,
     customizations 
   } = useSelector(state => state.editor);
   
@@ -163,6 +164,19 @@ const SectionBasedEditor = ({ portfolioId }) => {
     dispatch(clearSelection());
   };
 
+  // Get canvas width based on device preview
+  const getCanvasWidth = () => {
+    switch (devicePreview) {
+      case 'mobile':
+        return '375px';
+      case 'tablet':
+        return '768px';
+      case 'desktop':
+      default:
+        return '100%';
+    }
+  };
+
   return (
     <div className="h-screen flex flex-col bg-gray-100">
       {/* Toolbar */}
@@ -191,12 +205,13 @@ const SectionBasedEditor = ({ portfolioId }) => {
 
         {/* Canvas */}
         <div 
-          className="flex-1 overflow-auto bg-gray-50"
+          className="flex-1 overflow-auto bg-gray-50 flex justify-center"
           onClick={handleCanvasClick}
         >
           <div 
-            className="mx-auto bg-white shadow-sm"
+            className="bg-white shadow-sm transition-all duration-300"
             style={{
+              width: getCanvasWidth(),
               transform: `scale(${zoom / 100})`,
               transformOrigin: 'top center',
               minHeight: '100vh'

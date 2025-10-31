@@ -16,6 +16,7 @@ const initialState = {
   editMode: true,
   showGrid: false,
   zoom: 100,
+  devicePreview: 'desktop', // 'desktop', 'tablet', 'mobile'
   customizations: {
     colors: {
       primary: '#1e3a8a',
@@ -240,6 +241,11 @@ const editorSlice = createSlice({
       state.zoom = Math.max(25, Math.min(200, action.payload));
     },
 
+    // Set device preview
+    setDevicePreview: (state, action) => {
+      state.devicePreview = action.payload;
+    },
+
     // Update customizations
     updateCustomizations: (state, action) => {
       state.customizations = {
@@ -385,6 +391,7 @@ export const {
   setEditMode,
   toggleGrid,
   setZoom,
+  setDevicePreview,
   updateCustomizations,
   updateColors,
   updateFonts,
