@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
@@ -25,6 +25,23 @@ import {
 } from 'react-icons/fa';
 import { ClipLoader } from 'react-spinners';
 
+// Debounce utility function
+const useDebounce = (value, delay) => {
+  const [debouncedValue, setDebouncedValue] = useState(value);
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(value);
+    }, delay);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [value, delay]);
+
+  return debouncedValue;
+};
+
 const DashboardPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -37,23 +54,68 @@ const DashboardPage = () => {
   const [selectedPortfolio, setSelectedPortfolio] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
+  // Debounce search term for better performance
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
   useEffect(() => {
     dispatch(getUserPortfolios());
   }, [dispatch]);
 
-  const filteredPortfolios = portfolios.filter(portfolio =>
-    portfolio.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Memoize filtered portfolios to avoid recalculating on every render
+  const filteredPortfolios = useMemo(() => {
+    if (!debouncedSearchTerm) return portfolios;
+    const searchLower = debouncedSearchTerm.toLowerCase();
+    return portfolios.filter(portfolio =>
+      portfolio.title.toLowerCase().includes(searchLower)
+    );
+  }, [portfolios, debouncedSearchTerm]);
 
-  const handleEdit = (portfolioId) => {
+  // Memoize stats calculations to avoid recalculating on every render
+  const stats = useMemo(() => {
+    const publishedCount = portfolios.filter(p => p.isPublished).length;
+    const totalViews = portfolios.reduce((sum, p) => sum + (p.views || 0), 0);
+    const lastUpdated = portfolios.length > 0 
+      ? new Date(Math.max(...portfolios.map(p => new Date(p.updatedAt)))).toLocaleDateString()
+      : 'N/A';
+
+    return [
+      { 
+        icon: <FaThLarge />, 
+        label: 'Total Portfolios', 
+        value: portfolios.length,
+        color: 'blue'
+      },
+      { 
+        icon: <FaGlobe />, 
+        label: 'Published', 
+        value: publishedCount,
+        color: 'green'
+      },
+      { 
+        icon: <FaChartLine />, 
+        label: 'Total Views', 
+        value: totalViews,
+        color: 'purple'
+      },
+      { 
+        icon: <FaClock />, 
+        label: 'Last Updated', 
+        value: lastUpdated,
+        color: 'orange'
+      }
+    ];
+  }, [portfolios]);
+
+  // Memoize handlers to prevent recreating functions on every render
+  const handleEdit = useCallback((portfolioId) => {
     navigate(`/editor/${portfolioId}`);
-  };
+  }, [navigate]);
 
-  const handlePreview = (portfolioId) => {
+  const handlePreview = useCallback((portfolioId) => {
     navigate(`/preview/${portfolioId}`);
-  };
+  }, [navigate]);
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     if (selectedPortfolio) {
       try {
         await dispatch(deletePortfolio(selectedPortfolio._id)).unwrap();
@@ -64,54 +126,25 @@ const DashboardPage = () => {
         toast.error('Failed to delete portfolio');
       }
     }
-  };
+  }, [selectedPortfolio, dispatch]);
 
-  const handleDuplicate = async (portfolio) => {
+  const handleDuplicate = useCallback(async (portfolio) => {
     try {
       await dispatch(duplicatePortfolio(portfolio._id)).unwrap();
       toast.success('Portfolio duplicated successfully');
     } catch (error) {
       toast.error('Failed to duplicate portfolio');
     }
-  };
+  }, [dispatch]);
 
-  const handleTogglePublish = async (portfolio) => {
+  const handleTogglePublish = useCallback(async (portfolio) => {
     try {
       await dispatch(togglePublish(portfolio._id)).unwrap();
       toast.success(portfolio.isPublished ? 'Portfolio unpublished' : 'Portfolio published successfully');
     } catch (error) {
       toast.error('Failed to update publish status');
     }
-  };
-
-  const stats = [
-    { 
-      icon: <FaThLarge />, 
-      label: 'Total Portfolios', 
-      value: portfolios.length,
-      color: 'blue'
-    },
-    { 
-      icon: <FaGlobe />, 
-      label: 'Published', 
-      value: portfolios.filter(p => p.isPublished).length,
-      color: 'green'
-    },
-    { 
-      icon: <FaChartLine />, 
-      label: 'Total Views', 
-      value: portfolios.reduce((sum, p) => sum + (p.views || 0), 0),
-      color: 'purple'
-    },
-    { 
-      icon: <FaClock />, 
-      label: 'Last Updated', 
-      value: portfolios.length > 0 
-        ? new Date(Math.max(...portfolios.map(p => new Date(p.updatedAt)))).toLocaleDateString()
-        : 'N/A',
-      color: 'orange'
-    }
-  ];
+  }, [dispatch]);
 
   return (
     <div className="min-h-screen bg-gray-50 py-8">
