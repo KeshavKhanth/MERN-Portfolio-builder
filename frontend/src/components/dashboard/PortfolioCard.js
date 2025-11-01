@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import {
@@ -14,7 +14,7 @@ import {
 import thumbnailService from '../../services/thumbnailService';
 import PortfolioThumbnail from './PortfolioThumbnail';
 
-const PortfolioCard = ({
+const PortfolioCard = React.memo(({
   portfolio,
   onDelete,
   onDuplicate,
@@ -22,19 +22,20 @@ const PortfolioCard = ({
 }) => {
   const [showActions, setShowActions] = useState(false);
 
-  const formatDate = (date) => {
-    return new Date(date).toLocaleDateString('en-US', {
+  // Memoize formatted date to avoid recalculating
+  const formattedDate = useMemo(() => {
+    return new Date(portfolio.updatedAt).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
       year: 'numeric'
     });
-  };
+  }, [portfolio.updatedAt]);
 
-  const handleCopyUrl = () => {
+  const handleCopyUrl = useCallback(() => {
     const url = `${window.location.origin}/portfolio/${portfolio.slug}`;
     navigator.clipboard.writeText(url);
     // You can add a toast notification here
-  };
+  }, [portfolio.slug]);
 
   return (
     <motion.div
@@ -116,7 +117,7 @@ const PortfolioCard = ({
         <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
           <div className="flex items-center gap-1">
             <FaClock className="text-xs" />
-            <span>{formatDate(portfolio.updatedAt)}</span>
+            <span>{formattedDate}</span>
           </div>
           <div className="flex items-center gap-1">
             <FaChartLine className="text-xs" />
@@ -168,6 +169,9 @@ const PortfolioCard = ({
       </div>
     </motion.div>
   );
-};
+});
+
+// Add display name for better debugging
+PortfolioCard.displayName = 'PortfolioCard';
 
 export default PortfolioCard;

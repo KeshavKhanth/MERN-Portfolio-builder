@@ -1,12 +1,35 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, current } from '@reduxjs/toolkit';
 
-// Helper function to add to history
+// Optimized helper function using structuredClone when available
+// Falls back to JSON.parse/stringify for compatibility
+const deepClone = (obj) => {
+  // Use native structuredClone if available (faster and handles more types)
+  if (typeof structuredClone !== 'undefined') {
+    return structuredClone(obj);
+  }
+  // Fallback to JSON method
+  return JSON.parse(JSON.stringify(obj));
+};
+
+// Helper function to add to history with size limit
 const addToHistory = (state) => {
+  // Limit history to prevent memory issues
+  const MAX_HISTORY_SIZE = 50;
+  
   state.history = state.history.slice(0, state.historyIndex + 1);
+  
+  // Only clone sections, not the entire state
   state.history.push({
-    sections: JSON.parse(JSON.stringify(state.sections))
+    sections: deepClone(state.sections)
   });
-  state.historyIndex++;
+  
+  // Keep history size under limit
+  if (state.history.length > MAX_HISTORY_SIZE) {
+    state.history = state.history.slice(-MAX_HISTORY_SIZE);
+    state.historyIndex = MAX_HISTORY_SIZE - 1;
+  } else {
+    state.historyIndex++;
+  }
 };
 
 const initialState = {
@@ -116,8 +139,9 @@ const editorSlice = createSlice({
           }
         });
         
+        // Use optimized deep clone
         const duplicate = {
-          ...JSON.parse(JSON.stringify(original)),
+          ...deepClone(original),
           id: `section-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
           order: newOrder,
           name: `${original.name || 'Section'} (Copy)`

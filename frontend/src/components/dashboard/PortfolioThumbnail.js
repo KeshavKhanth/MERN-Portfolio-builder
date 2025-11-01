@@ -1,16 +1,29 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import ComponentRenderer from '../editor/ComponentRenderer';
 import thumbnailService from '../../services/thumbnailService';
 
-const PortfolioThumbnail = ({ portfolio, width = 400, height = 300 }) => {
+const PortfolioThumbnail = React.memo(({ portfolio, width = 400, height = 300 }) => {
   const previewRef = useRef(null);
   const [thumbnailUrl, setThumbnailUrl] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
 
+  // Memoize sorted sections to avoid recalculating on every render
+  const sortedSections = useMemo(() => {
+    if (!portfolio?.sections) return [];
+    return [...portfolio.sections]
+      .sort((a, b) => (a.order || 0) - (b.order || 0))
+      .slice(0, 3); // Only take first 3 for thumbnail
+  }, [portfolio?.sections]);
+
   useEffect(() => {
-    generateThumbnail();
-  }, [portfolio]);
+    // Debounce thumbnail generation to avoid excessive calls
+    const timer = setTimeout(() => {
+      generateThumbnail();
+    }, 300);
+    
+    return () => clearTimeout(timer);
+  }, [portfolio?._id]); // Only regenerate when portfolio ID changes
 
   const generateThumbnail = async () => {
     if (!portfolio || !portfolio.sections) {
@@ -27,23 +40,9 @@ const PortfolioThumbnail = ({ portfolio, width = 400, height = 300 }) => {
       return;
     }
 
-    // Generate new thumbnail after a short delay to let content render
-    setIsGenerating(true);
-    setTimeout(async () => {
-      if (previewRef.current) {
-        const thumbnail = await thumbnailService.generateThumbnail(previewRef.current, {
-          width,
-          height,
-          scale: 0.5
-        });
-        
-        if (thumbnail) {
-          setThumbnailUrl(thumbnail);
-          thumbnailService.cacheThumbnail(portfolio._id, thumbnail);
-        }
-      }
-      setIsGenerating(false);
-    }, 500);
+    // Skip expensive thumbnail generation for now, use lightweight preview
+    // This significantly improves performance
+    return;
   };
 
   const renderPreviewContent = () => {
@@ -62,11 +61,9 @@ const PortfolioThumbnail = ({ portfolio, width = 400, height = 300 }) => {
     }
 
     // Render actual portfolio sections in miniature
-    const sortedSections = [...portfolio.sections].sort((a, b) => (a.order || 0) - (b.order || 0));
-    
     return (
       <div className="bg-white">
-        {sortedSections.slice(0, 3).map((section) => (
+        {sortedSections.map((section) => (
           <div 
             key={section.id || section._id} 
             className="relative"
@@ -92,9 +89,9 @@ const PortfolioThumbnail = ({ portfolio, width = 400, height = 300 }) => {
             </div>
           </div>
         ))}
-        {sortedSections.length > 3 && (
+        {portfolio.sections.length > 3 && (
           <div className="text-center py-2 text-xs text-gray-400">
-            +{sortedSections.length - 3} more sections
+            +{portfolio.sections.length - 3} more sections
           </div>
         )}
       </div>
@@ -112,21 +109,7 @@ const PortfolioThumbnail = ({ portfolio, width = 400, height = 300 }) => {
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-gray-50">
-      {/* Hidden preview for thumbnail generation */}
-      <div 
-        ref={previewRef}
-        className="absolute"
-        style={{
-          width: `${width}px`,
-          height: `${height}px`,
-          left: '-9999px',
-          top: '-9999px'
-        }}
-      >
-        {renderPreviewContent()}
-      </div>
-
-      {/* Visible preview */}
+      {/* Visible preview - optimized to not use hidden element */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: isGenerating ? 0.5 : 1 }}
@@ -148,6 +131,8 @@ const PortfolioThumbnail = ({ portfolio, width = 400, height = 300 }) => {
       )}
     </div>
   );
-};
+});
+
+PortfolioThumbnail.displayName = 'PortfolioThumbnail';
 
 export default PortfolioThumbnail;
