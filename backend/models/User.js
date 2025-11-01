@@ -64,10 +64,14 @@ const userSchema = new mongoose.Schema({
   }
 });
 
-// Hash password before saving
+// Optimized pre-save hook: hash password and update timestamp in single hook
 userSchema.pre('save', async function(next) {
+  // Update timestamp on every save
+  this.updatedAt = Date.now();
+  
+  // Only hash password if it was modified
   if (!this.isModified('password')) {
-    next();
+    return next();
   }
   
   const salt = await bcrypt.genSalt(10);
@@ -75,11 +79,11 @@ userSchema.pre('save', async function(next) {
   next();
 });
 
-// Update the updatedAt timestamp
-userSchema.pre('save', function(next) {
-  this.updatedAt = Date.now();
-  next();
-});
+// Indexes for performance optimization
+userSchema.index({ email: 1 });
+userSchema.index({ isActive: 1 });
+userSchema.index({ emailVerified: 1 });
+userSchema.index({ createdAt: -1 });
 
 // Match password
 userSchema.methods.matchPassword = async function(enteredPassword) {

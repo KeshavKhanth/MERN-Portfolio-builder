@@ -101,9 +101,12 @@ const createPortfolio = async (req, res) => {
 // @access  Private
 const getUserPortfolios = async (req, res) => {
   try {
+    // Optimized query with field selection and lean() for better performance
     const portfolios = await Portfolio.find({ userId: req.user.id })
+      .select('title slug isPublished views createdAt updatedAt publishedAt templateId templateInfo')
       .populate('templateId', 'name category')
-      .sort('-createdAt');
+      .sort('-createdAt')
+      .lean(); // Returns plain JS objects instead of Mongoose documents for better performance
 
     res.json({
       success: true,
@@ -145,10 +148,15 @@ const getPortfolio = async (req, res) => {
       });
     }
 
-    // Increment views if not owner
+    // Increment views if not owner (optimized to avoid extra query)
     if (!req.user || portfolio.userId._id.toString() !== req.user.id) {
+      // Use updateOne to avoid loading and saving entire document
+      await Portfolio.updateOne(
+        { _id: portfolio._id },
+        { $inc: { views: 1 } }
+      );
+      // Update the local object for response
       portfolio.views += 1;
-      await portfolio.save();
     }
 
     res.json({
@@ -322,9 +330,13 @@ const getPortfolioBySlug = async (req, res) => {
       });
     }
 
-    // Increment views
+    // Increment views using atomic operation for better performance
+    await Portfolio.updateOne(
+      { _id: portfolio._id },
+      { $inc: { views: 1 } }
+    );
+    // Update local object for response
     portfolio.views += 1;
-    await portfolio.save();
 
     res.json({
       success: true,

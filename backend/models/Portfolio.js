@@ -100,7 +100,7 @@ const portfolioSchema = new mongoose.Schema({
   }
 });
 
-// Generate unique slug before saving
+// Optimized slug generation - includes userId from start to reduce collisions
 portfolioSchema.pre('save', async function(next) {
   try {
     if (this.isNew || this.isModified('title')) {
@@ -114,13 +114,13 @@ portfolioSchema.pre('save', async function(next) {
         baseSlug = 'portfolio';
       }
       
-      let slug = baseSlug;
+      // Add userId to make slug more unique from the start and reduce DB queries
+      const userId = this.userId.toString().slice(-6);
+      let slug = `${baseSlug}-${userId}`;
       let counter = 1;
       
-      // Add userId to make slug more unique and avoid conflicts
-      const userId = this.userId.toString().slice(-6);
-      
-      while (await mongoose.model('Portfolio').findOne({ slug, _id: { $ne: this._id } })) {
+      // Use lean() for faster query (returns plain JS objects instead of Mongoose documents)
+      while (await mongoose.model('Portfolio').findOne({ slug, _id: { $ne: this._id } }).lean().select('_id')) {
         slug = `${baseSlug}-${userId}-${counter}`;
         counter++;
       }
@@ -165,8 +165,11 @@ portfolioSchema.virtual('url').get(function() {
   return `/portfolio/${this.slug}`;
 });
 
-// Index for faster queries
+// Indexes for faster queries
 portfolioSchema.index({ userId: 1, isPublished: 1 });
 portfolioSchema.index({ slug: 1 });
+portfolioSchema.index({ userId: 1, createdAt: -1 }); // For sorting user portfolios
+portfolioSchema.index({ isPublished: 1, views: -1 }); // For popular published portfolios
+portfolioSchema.index({ templateId: 1 }); // For template-based queries
 
 module.exports = mongoose.model('Portfolio', portfolioSchema);
