@@ -4,10 +4,14 @@ import { createSlice, current } from '@reduxjs/toolkit';
 // Falls back to JSON.parse/stringify for compatibility
 const deepClone = (obj) => {
   // Use native structuredClone if available (faster and handles more types)
-  if (typeof structuredClone !== 'undefined') {
-    return structuredClone(obj);
+  try {
+    if (typeof structuredClone !== 'undefined') {
+      return structuredClone(obj);
+    }
+  } catch (error) {
+    // Fall through to JSON method if structuredClone fails
   }
-  // Fallback to JSON method
+  // Fallback to JSON method for older browsers
   return JSON.parse(JSON.stringify(obj));
 };
 

@@ -17,33 +17,14 @@ const PortfolioThumbnail = React.memo(({ portfolio, width = 400, height = 300 })
   }, [portfolio?.sections]);
 
   useEffect(() => {
-    // Debounce thumbnail generation to avoid excessive calls
-    const timer = setTimeout(() => {
-      generateThumbnail();
-    }, 300);
-    
-    return () => clearTimeout(timer);
-  }, [portfolio?._id]); // Only regenerate when portfolio ID changes
-
-  const generateThumbnail = async () => {
-    if (!portfolio || !portfolio.sections) {
-      // Use gradient thumbnail as fallback
-      const gradientStyle = thumbnailService.generateGradientThumbnail(portfolio || {});
-      setThumbnailUrl(null);
-      return;
+    // Check for cached thumbnail on mount or when portfolio changes
+    if (portfolio?._id) {
+      const cached = thumbnailService.getCachedThumbnail(portfolio._id);
+      if (cached) {
+        setThumbnailUrl(cached);
+      }
     }
-
-    // Check for cached thumbnail first
-    const cached = thumbnailService.getCachedThumbnail(portfolio._id);
-    if (cached) {
-      setThumbnailUrl(cached);
-      return;
-    }
-
-    // Skip expensive thumbnail generation for now, use lightweight preview
-    // This significantly improves performance
-    return;
-  };
+  }, [portfolio?._id]);
 
   const renderPreviewContent = () => {
     if (!portfolio || !portfolio.sections) {

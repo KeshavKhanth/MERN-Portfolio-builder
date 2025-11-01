@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
 
+// Constants for slug generation
+const USER_ID_SUFFIX_LENGTH = 6; // Number of characters from userId to use in slug
+
 const portfolioSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -114,8 +117,8 @@ portfolioSchema.pre('save', async function(next) {
         baseSlug = 'portfolio';
       }
       
-      // Add userId to make slug more unique from the start and reduce DB queries
-      const userId = this.userId.toString().slice(-6);
+      // Add userId suffix to make slug more unique from the start and reduce DB queries
+      const userId = this.userId.toString().slice(-USER_ID_SUFFIX_LENGTH);
       let slug = `${baseSlug}-${userId}`;
       let counter = 1;
       
