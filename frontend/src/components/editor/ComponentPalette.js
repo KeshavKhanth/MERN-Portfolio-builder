@@ -370,14 +370,6 @@ const ComponentPalette = () => {
 
       {/* Components Grid */}
       <div className="flex-1 overflow-y-auto p-4">
-        {selectedCategory === 'sections' && (
-          <div className="mb-4 p-3 bg-blue-50 rounded-lg">
-            <p className="text-sm text-blue-800">
-              <strong>Tip:</strong> Drag these complete sections to quickly build your portfolio
-            </p>
-          </div>
-        )}
-
         <div className="grid grid-cols-2 gap-3">
           {filteredComponents().map((component) => (
             <DraggableComponent

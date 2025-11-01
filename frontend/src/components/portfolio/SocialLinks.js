@@ -282,11 +282,11 @@ const SocialLinks = ({
                   rel={isEmail ? undefined : "noopener noreferrer"}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-6 py-3 bg-white shadow-md rounded-lg flex items-center gap-2 hover:shadow-lg transition-shadow"
+                  className="px-4 py-3 bg-white shadow-md rounded-lg flex items-center gap-2 hover:shadow-lg transition-shadow min-w-[120px] justify-center"
                   style={{ color: getIconColor(link.platform) }}
                 >
                   <Icon className={sizeClasses[size]} />
-                  <span className="capitalize">{link.platform}</span>
+                  <span className="capitalize text-sm font-medium">{link.platform}</span>
                 </motion.a>
               );
             })}

@@ -32,7 +32,7 @@ const SettingsPage = () => {
   const tabs = [
     { id: 'profile', label: 'Profile', icon: FaUser },
     { id: 'security', label: 'Security', icon: FaLock },
-    { id: 'notifications', label: 'Notifications', icon: FaBell },
+    // { id: 'notifications', label: 'Notifications', icon: FaBell },
     { id: 'appearance', label: 'Appearance', icon: FaPalette },
     { id: 'privacy', label: 'Privacy', icon: FaShieldAlt }
   ];
@@ -258,9 +258,9 @@ const SettingsPage = () => {
 
   const renderPrivacySettings = () => (
     <div className="space-y-8">
-      <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Privacy Settings</h3>
-        <div className="space-y-4">
+      {/* <div> */}
+        {/* <h3 className="text-lg font-semibold text-gray-900 mb-4">Privacy Settings</h3> */}
+        {/* <div className="space-y-4">
           <label className="flex items-center justify-between">
             <div>
               <div className="font-medium text-gray-900">Make profile public</div>
@@ -276,8 +276,8 @@ const SettingsPage = () => {
             </div>
             <input type="checkbox" className="ml-3" />
           </label>
-        </div>
-      </div>
+        </div> */}
+      {/* </div> */}
       
       <div className="pt-8 border-t border-gray-200">
         <h3 className="text-lg font-semibold text-red-600 mb-4">Danger Zone</h3>

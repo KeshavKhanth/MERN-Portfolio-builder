@@ -6,12 +6,8 @@ import {
   FaEye,
   FaUndo,
   FaRedo,
-  FaDesktop,
-  FaTabletAlt,
-  FaMobileAlt,
   FaCog,
   FaArrowLeft,
-  FaDownload,
   FaShareAlt,
   FaEdit,
   FaLink,
@@ -25,7 +21,6 @@ import {
   toggleEditMode,
   toggleGrid,
   setZoom,
-  setDevicePreview,
   undo,
   redo
 } from '../../store/slices/editorSlice';
@@ -46,7 +41,6 @@ const EditorToolbar = ({ portfolioId, onTogglePalette, onToggleProperties }) => 
     editMode,
     showGrid,
     zoom,
-    devicePreview,
     sections,
     customizations,
     historyIndex,
@@ -152,31 +146,6 @@ const EditorToolbar = ({ portfolioId, onTogglePalette, onToggleProperties }) => 
     });
   };
 
-  // Export handler
-  const handleExport = () => {
-    // Create a JSON export of the portfolio
-    const exportData = {
-      sections,
-      customizations,
-      metadata: {
-        exportDate: new Date().toISOString(),
-        portfolioTitle: currentPortfolio?.title || 'Untitled Portfolio'
-      }
-    };
-    
-    const dataStr = JSON.stringify(exportData, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-    
-    const exportName = `portfolio-${portfolioId}-${Date.now()}.json`;
-    
-    const linkElement = document.createElement('a');
-    linkElement.setAttribute('href', dataUri);
-    linkElement.setAttribute('download', exportName);
-    linkElement.click();
-    
-    toast.success('Portfolio exported successfully!');
-  };
-
   // Zoom controls
   const zoomOptions = [
     { value: 50, label: '50%' },
@@ -268,33 +237,6 @@ const EditorToolbar = ({ portfolioId, onTogglePalette, onToggleProperties }) => 
 
           <div className="h-8 w-px bg-gray-300" />
 
-          {/* Device Preview */}
-          <div className="flex items-center bg-gray-100 rounded-lg p-1">
-            <button
-              onClick={() => dispatch(setDevicePreview('desktop'))}
-              className={`p-1.5 rounded ${devicePreview === 'desktop' ? 'bg-white shadow-sm' : ''}`}
-              title="Desktop View"
-            >
-              <FaDesktop className={`text-sm ${devicePreview === 'desktop' ? 'text-blue-600' : 'text-gray-600'}`} />
-            </button>
-            <button
-              onClick={() => dispatch(setDevicePreview('tablet'))}
-              className={`p-1.5 rounded ${devicePreview === 'tablet' ? 'bg-white shadow-sm' : ''}`}
-              title="Tablet View"
-            >
-              <FaTabletAlt className={`text-sm ${devicePreview === 'tablet' ? 'text-blue-600' : 'text-gray-600'}`} />
-            </button>
-            <button
-              onClick={() => dispatch(setDevicePreview('mobile'))}
-              className={`p-1.5 rounded ${devicePreview === 'mobile' ? 'bg-white shadow-sm' : ''}`}
-              title="Mobile View"
-            >
-              <FaMobileAlt className={`text-sm ${devicePreview === 'mobile' ? 'text-blue-600' : 'text-gray-600'}`} />
-            </button>
-          </div>
-
-          <div className="h-8 w-px bg-gray-300" />
-
           {/* Grid Toggle */}
           {/* <button
             onClick={() => dispatch(toggleGrid())}
@@ -353,16 +295,6 @@ const EditorToolbar = ({ portfolioId, onTogglePalette, onToggleProperties }) => 
               View Live
             </button>
           )}
-
-          {/* Export Button */}
-          <button
-            onClick={handleExport}
-            className="px-3 py-1.5 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
-            title="Export Portfolio"
-          >
-            <FaDownload className="text-sm" />
-            Export
-          </button>
 
           {/* Save Button */}
           <button
@@ -426,15 +358,6 @@ const EditorToolbar = ({ portfolioId, onTogglePalette, onToggleProperties }) => 
           )}
         </div>
       </div>
-
-      {/* Optional: Auto-save indicator */}
-      {sections.length > 0 && (
-        <div className="absolute top-1 right-1">
-          <span className="text-xs text-gray-400">
-            {isSaving ? 'Saving...' : 'All changes saved'}
-          </span>
-        </div>
-      )}
       
       {/* Publish URL Modal */}
       {showPublishModal && (

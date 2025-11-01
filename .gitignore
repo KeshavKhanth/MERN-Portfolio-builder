@@ -27,3 +27,8 @@ frontend/public/static/
 # AI Agent Instructions
 .github/copilot-instructions.md
 
+# Documentation and Markdown Files (root level)
+*.md
+!README.md
+!.gitignore
+

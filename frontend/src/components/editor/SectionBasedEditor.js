@@ -71,24 +71,34 @@ const SectionBasedEditor = ({ portfolioId }) => {
         }
       },
       collect: monitor => ({
-        isOver: monitor.isOver(),
+        isOver: monitor.isOver({ shallow: true }),
         canDrop: monitor.canDrop()
       })
     });
+
+    // For empty portfolio, make it more prominent
+    const isEmptyPortfolio = sections.length === 0;
 
     return (
       <div 
         ref={drop}
         className={`
           transition-all duration-300 rounded-lg
-          ${isOver && canDrop ? 'bg-blue-400 h-24 border-2 border-blue-500 border-dashed my-4' : ''}
-          ${canDrop && !isOver ? 'bg-blue-200 h-4 my-2 opacity-50' : ''}
-          ${!canDrop ? 'h-0' : ''}
+          ${isEmptyPortfolio ? 'min-h-screen' : ''}
+          ${isOver && canDrop ? 'bg-blue-400 border-2 border-blue-500 border-dashed' : ''}
+          ${isOver && canDrop && !isEmptyPortfolio ? 'h-24 my-4' : ''}
+          ${canDrop && !isOver && !isEmptyPortfolio ? 'bg-blue-200 h-4 my-2 opacity-50' : ''}
+          ${!canDrop && !isEmptyPortfolio ? 'h-0' : ''}
         `}
       >
-        {isOver && canDrop && (
+        {isOver && canDrop && !isEmptyPortfolio && (
           <div className="flex items-center justify-center h-full">
             <span className="text-blue-600 font-medium text-lg">Drop here to add section</span>
+          </div>
+        )}
+        {isOver && canDrop && isEmptyPortfolio && (
+          <div className="flex items-center justify-center h-full">
+            <span className="text-white font-bold text-2xl">Drop component here to start</span>
           </div>
         )}
       </div>
@@ -219,8 +229,13 @@ const SectionBasedEditor = ({ portfolioId }) => {
           >
             {/* Empty State */}
             {sortedSections.length === 0 && (
-              <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center p-12">
+              <div className="min-h-screen flex items-center justify-center relative">
+                {/* Drop Zone for empty portfolio */}
+                <div className="absolute inset-0">
+                  <DropZone index={0} />
+                </div>
+                
+                <div className="text-center p-12 relative z-10 pointer-events-none">
                   <div className="w-24 h-24 mx-auto mb-6 bg-gradient-to-br from-blue-100 to-purple-100 rounded-full flex items-center justify-center">
                     <FaPlus className="text-3xl text-blue-600" />
                   </div>
@@ -232,7 +247,7 @@ const SectionBasedEditor = ({ portfolioId }) => {
                   </p>
                   <button
                     onClick={() => handleAddSection(0)}
-                    className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 inline-flex items-center gap-2"
+                    className="px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-lg hover:shadow-xl transform hover:scale-105 transition-all duration-200 inline-flex items-center gap-2 pointer-events-auto"
                   >
                     <FaPlus /> Add First Section
                   </button>

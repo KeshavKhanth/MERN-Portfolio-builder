@@ -25,16 +25,16 @@ const HomePage = () => {
       title: 'Responsive Design',
       description: 'Your portfolio looks perfect on all devices - desktop, tablet, and mobile.'
     },
-    {
-      icon: <FaCloud />,
-      title: 'Cloud Hosting',
-      description: 'Free hosting with custom domain support. Your portfolio is always online.'
-    },
-    {
-      icon: <FaLock />,
-      title: 'Secure & Private',
-      description: 'Your data is encrypted and secure. Control who can see your portfolio.'
-    },
+    // {
+    //   icon: <FaCloud />,
+    //   title: 'Cloud Hosting',
+    //   description: 'Free hosting with custom domain support. Your portfolio is always online.'
+    // },
+    // {
+    //   icon: <FaLock />,
+    //   title: 'Secure & Private',
+    //   description: 'Your data is encrypted and secure. Control who can see your portfolio.'
+    // },
     {
       icon: <FaChartLine />,
       title: 'Analytics',
